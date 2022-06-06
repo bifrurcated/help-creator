@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ru.vvsu.helpcreator.controller.ProjectCreateController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vvsu.helpcreator.controller.ProjectCreateController">
+   <children>
+      <TextField fx:id="textFieldSearch" layoutX="115.0" layoutY="38.0" prefHeight="26.0" prefWidth="232.0" promptText="Поиск проектов" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="253.0" />
+      <Button layoutX="360.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleBtnNewProject" text="Новый проект" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="38.0">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="btn-primary" />
+            <String fx:value="btn-sm" />
+         </styleClass>
+         <graphic>
+            <FontIcon iconColor="WHITE" iconLiteral="anto-folder-add" />
+         </graphic></Button>
+      <Button layoutX="487.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleBtnOpen" text="Открыть" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="39.0">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="btn-primary" />
+            <String fx:value="btn-sm" />
+         </styleClass>
+         <graphic>
+            <FontIcon iconColor="WHITE" iconLiteral="anto-folder-open" />
+         </graphic></Button>
+      <ListView fx:id="listViewProjects" layoutX="101.0" layoutY="97.0" onMouseClicked="#handleListViewMouseClicked" prefHeight="303.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="100.0">
+         <styleClass>
+            <String fx:value="text-primary" />
+            <String fx:value="h5" />
+         </styleClass></ListView>
+      <FontIcon iconLiteral="anto-search" iconSize="16" layoutX="98.0" layoutY="57.0" wrappingWidth="22.0" />
+   </children>
 </AnchorPane>
