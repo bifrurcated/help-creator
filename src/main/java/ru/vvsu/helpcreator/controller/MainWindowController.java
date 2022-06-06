@@ -31,7 +31,6 @@ public class MainWindowController implements Initializable {
     private final ImageView defaultImageView;
     private final String defaultHtmlPage;
     private TreeItem<Page> previousPageSelected;
-    private TreeItem<Page> rootItem;
 
     public MainWindowController() {
         final String pathToImg = Objects.requireNonNull(getClass().getResource("/ru/vvsu/helpcreator/images/ListView32.png")).toExternalForm();
@@ -44,7 +43,7 @@ public class MainWindowController implements Initializable {
         final Page page1 = new Page(projectName, String.format(defaultHtmlPage, projectName));
         final Page page2 = new Page("page 1", String.format(defaultHtmlPage, "page 1"));
         final Page page3 = new Page("page 2", String.format(defaultHtmlPage, "page 2"));
-        rootItem = new TreeItem<>(page1, defaultImageView);
+        TreeItem<Page> rootItem = new TreeItem<>(page1, defaultImageView);
         rootItem.setExpanded(true);
         TreeItem<Page> treeItem1 = new TreeItem<>(page2, defaultImageView);
         TreeItem<Page> treeItem2 = new TreeItem<>(page3, defaultImageView);
