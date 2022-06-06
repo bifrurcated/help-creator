@@ -26,17 +26,17 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>11</version>
+            <version>11.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11</version>
+            <version>11.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11</version>
+            <version>11.0.2</version>
         </dependency>
 
         <!-- plugin for javafx -->
@@ -91,7 +91,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ru.vvsu.helpcreator/ru.vvsu.helpcreator.HelpCreatorApp</mainClass>
+                            <mainClass>ru.vvsu.helpcreator/ru.vvsu.helpcreator.Main</mainClass>
                         </configuration>
                     </execution>
                 </executions>
