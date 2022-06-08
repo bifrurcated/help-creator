@@ -6,7 +6,6 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import ru.vvsu.helpcreator.utils.DefaultValues;
 
 public class ContextMenuTreeCell<T> extends TreeCell<T> {
 
@@ -18,27 +17,12 @@ public class ContextMenuTreeCell<T> extends TreeCell<T> {
         return listView -> {
             TextFieldTreeCell<T> cell = cellFactory == null ? new DefaultTreeCell<>() : cellFactory.call(listView);
             cell.setContextMenu(contextMenu);
+            if (cell.getItem() instanceof Page) {
+                final Page item = (Page) cell.getItem();
+                StringConverter<Page> converter = new PageStringConverter(item);
+                cell.setConverter((StringConverter<T>) converter);
+            }
 
-            StringConverter<Page> converter = new StringConverter<>() {
-                @Override
-                public String toString(Page page) {
-                    return page.getName();
-                }
-                @Override
-                public Page fromString(String string) {
-                    Page city = (Page) cell.getItem();
-                    if (city == null) {
-                        Page newPage = new Page();
-                        newPage.setName(string);
-                        newPage.setHtml(String.format(DefaultValues.HTMLPAGE, string));
-                        return newPage;
-                    } else {
-                        city.setName(string);
-                        return city;
-                    }
-                }
-            };
-            cell.setConverter((StringConverter<T>) converter);
             return cell;
         };
     }
