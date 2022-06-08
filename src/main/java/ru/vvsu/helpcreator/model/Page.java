@@ -1,7 +1,5 @@
 package ru.vvsu.helpcreator.model;
 
-import javafx.util.StringConverter;
-
 public class Page {
     private String name;
     private String html;
