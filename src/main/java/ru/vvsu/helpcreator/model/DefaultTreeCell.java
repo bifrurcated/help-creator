@@ -28,20 +28,5 @@ public class DefaultTreeCell<T> extends TextFieldTreeCell<T> {
             setText(item == null ? "null" : item.toString());
             setGraphic(null);
         }
-
-//        if (empty) {
-//            setText(null);
-//            setGraphic(null);
-//        } else if (item instanceof Node) {
-//            setText(null);
-//            Node currentNode = getGraphic();
-//            Node newNode = (Node) item;
-//            if (currentNode == null || !currentNode.equals(newNode)) {
-//                setGraphic(newNode);
-//            }
-//        } else {
-//            setText(item == null ? "null" : item.toString());
-//            setGraphic(null);
-//        }
     }
 }
