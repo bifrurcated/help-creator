@@ -14,9 +14,10 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="New" />
-                  <MenuItem mnemonicParsing="false" text="Open" />
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemNew" text="New" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemOpen" text="Open" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemSave" text="Save" />
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -27,7 +28,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About" />
             </items>
           </Menu>
         </menus>
@@ -36,7 +37,7 @@
         <items>
             <SplitPane dividerPositions="0.27759197324414714" prefHeight="100.0" prefWidth="598.0">
                <items>
-                  <TreeView fx:id="treeView" onEditCommit="#handleTreeViewEditCommit" onMouseClicked="#handleMouseClicked" prefHeight="372.0" prefWidth="163.0" />
+                  <TreeView fx:id="treeView" onMouseClicked="#handleMouseClicked" prefHeight="372.0" prefWidth="163.0" />
                   <AnchorPane prefHeight="268.0" prefWidth="337.0">
                      <children>
                         <HTMLEditor fx:id="htmlEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="268.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

@@ -39,7 +39,7 @@ public class MainWindowController implements Initializable {
     public void setRootTreeView(String projectName) {
         FontIcon icon = new FontIcon("anto-file-text");
         icon.setIconSize(8);
-        final Page page1 = new Page(projectName, String.format(DefaultValues.HTMLPAGE, projectName));
+        final Page page1 = new Page(projectName, "");
         final Page page2 = new Page("page 1", String.format(DefaultValues.HTMLPAGE, "page 1"));
         final Page page3 = new Page("page 2", String.format(DefaultValues.HTMLPAGE, "page 2"));
         TreeItem<Page> rootItem = new TreeItem<>(page1, icon);
@@ -50,8 +50,8 @@ public class MainWindowController implements Initializable {
         rootItem.getChildren().add(treeItem2);
 
         treeView.setRoot(rootItem);
-        htmlEditor.setHtmlText(rootItem.getValue().getHtml());
-        treeView.getSelectionModel().selectFirst();
+        htmlEditor.setHtmlText(treeItem1.getValue().getHtml());
+        treeView.getSelectionModel().select(1);
         previousPageSelected = treeView.getSelectionModel().getSelectedItem();
     }
 
@@ -61,8 +61,8 @@ public class MainWindowController implements Initializable {
 
         MenuItem addPage = new MenuItem("Add page");
         MenuItem addSubPage = new MenuItem("Add subpage");
-        ContextMenu contextMenu2 = new ContextMenu(addPage, addSubPage);
-        treeView.setCellFactory(ContextMenuTreeCell.forTreeView(contextMenu2));
+        ContextMenu contextMenu = new ContextMenu(addPage, addSubPage);
+        treeView.setCellFactory(ContextMenuTreeCell.forTreeView(contextMenu));
 
         addPage.setOnAction(actionEvent -> {
             Page newPage = new Page("new Page", String.format(DefaultValues.HTMLPAGE, "new Page"));
@@ -95,17 +95,28 @@ public class MainWindowController implements Initializable {
         System.out.println(htmlEditor.getHtmlText());
     }
 
-    public void handleTreeViewEditCommit(TreeView.EditEvent<String> stringEditEvent) {
-
-    }
-
     public void handleMouseClicked(MouseEvent mouseEvent) {
         final TreeItem<Page> value = treeView.getSelectionModel().getSelectedItem();
-        if (value != null) {
+        if (value != null && value != treeView.getRoot()) {
             final Page page = value.getValue();
             previousPageSelected.getValue().setHtml(htmlEditor.getHtmlText());
             previousPageSelected = value;
             htmlEditor.setHtmlText(page.getHtml());
         }
+    }
+
+    public void handleMenuItemNew(ActionEvent actionEvent) {
+    }
+
+    public void handleMenuItemOpen(ActionEvent actionEvent) {
+    }
+
+    public void handleMenuItemSave(ActionEvent actionEvent) {
+    }
+
+    public void handleMenuItemClose(ActionEvent actionEvent) {
+    }
+
+    public void handleMenuItemAbout(ActionEvent actionEvent) {
     }
 }
