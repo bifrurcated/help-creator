@@ -1,9 +1,8 @@
 package ru.vvsu.helpcreator.model;
 
-import java.nio.file.Path;
-import java.util.Date;
+import java.io.Serializable;
 
-public class Project {
+public class Project implements Serializable {
     private String name;
     private String date;
     private String path;
