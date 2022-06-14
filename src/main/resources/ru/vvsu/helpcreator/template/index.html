@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--link rel="stylesheet" href="youtube-adaptive-header-master/reset.css" /-->
+    <link rel="stylesheet" href="style/all_page.css">
+    <title>Documentation</title>
+</head>
+<body>
+    <header class="page-header">
+        <img src="img/logo.png" width="128" height="80" alt="logo" class="logo">
+        <div class="container">
+          <h2>Product name</h2>
+          <h3>Руководство пользователя</h3>
+        </div>
+    </header>
+    <div class="nav-and-main">
+        <div class="popup" id="popup"></div>
+        <nav id="navbar">
+            <div class="hamb">
+                <div class="hamb__field" id="hamb">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                </div>
+            </div>
+            <header>Menu</header>
+            <div class="menu" id="menu">
+                <div onclick="tree_toggle(arguments[0])">
+                    <ul class="Container">
+                      <li class="Node IsRoot ExpandClosed">
+                        <div class="Expand"></div>
+                        <div class="Content" id="Content">
+                            <img src="img/ListView32.png" alt="icon-doc">
+                            <a href="" class="nav-link">Learning pathway</a>
+                        </div>
+                        <ul class="Container">
+                          <li class="Node ExpandClosed">
+                            <div class="Expand"></div>
+                            <div class="Content">
+                                <img src="img/ListView32.png" alt="icon-doc">
+                                <a href="" class="nav-link">Item 1.1</a>
+                            </div>
+                            <ul class="Container">
+                              <li class="Node ExpandLeaf IsLast">
+                                <div class="Expand"></div>
+                                <div class="Content">
+                                    <img src="img/ListView32.png" alt="icon-doc">
+                                    Item 1.1.2
+                                </div>
+                              </li>
+                            </ul>
+                          </li>
+                          <li class="Node ExpandLeaf IsLast">
+                            <div class="Expand"></div>
+                            <div class="Content">
+                                <img src="img/ListView32.png" alt="icon-doc">
+                                Item 1.2
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="Node IsRoot ExpandClosed IsLast">
+                        <div class="Expand"></div>
+                        <div class="Content">
+                            <img src="img/ListView32.png" alt="icon-doc">
+                            Item 2
+                        </div>
+                        <ul class="Container">
+                          <li class="Node ExpandLeaf IsLast">
+                            <div class="Expand"></div>
+                            <div class="Content">
+                                <img src="img/ListView32.png" alt="icon-doc">
+                                Item 2.1
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                </div>             
+            </div>
+        </nav>
+        <div class="resizer" id="dragMe"></div>
+        <main id="main-doc">
+            <section></section>
+        </main>
+    </div>
+    <footer class="page-footer">
+        <div class="container">
+          <h4>(с) Название компании, 2022</h4>
+        </div>
+    </footer>
+    <script src="script/split_screen.js"></script>
+    <script src="script/open_list.js"></script>
+    <script src="script/burgerMenu.js"></script>
+</body>
+</html>
