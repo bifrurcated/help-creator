@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vvsu.helpcreator.controller.ProjectCreateController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vvsu.helpcreator.controller.ProjectCreate">
    <children>
       <TextField fx:id="textFieldSearch" layoutX="115.0" layoutY="38.0" prefHeight="26.0" prefWidth="232.0" promptText="Поиск проектов" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="253.0" />
       <Button layoutX="360.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleBtnNewProject" text="Новый проект" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="38.0">

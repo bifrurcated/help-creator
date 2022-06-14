@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class MainWindowController implements Initializable {
+public class MainWindow implements Initializable {
 
     @FXML
     private TreeView<Page> treeView;
@@ -30,7 +30,7 @@ public class MainWindowController implements Initializable {
     private final ImageView defaultImageView;
     private TreeItem<Page> previousPageSelected;
 
-    public MainWindowController() {
+    public MainWindow() {
         final String pathToImg = Objects.requireNonNull(getClass().getResource("/ru/vvsu/helpcreator/images/ListView32.png")).toExternalForm();
         final Image image = new Image(pathToImg, 16D, 16D, true, false);
         defaultImageView = new ImageView(image);

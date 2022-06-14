@@ -18,9 +18,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
-public class ProjectCreateController implements Initializable {
+public class ProjectCreate implements Initializable {
 
     @FXML
     private TextField textFieldSearch;
@@ -29,13 +30,16 @@ public class ProjectCreateController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(Calendar.getInstance().getTime());
+        final Date time = Calendar.getInstance().getTime();
+        time.setTime(10000);
+        String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
         String path = new File("").getAbsolutePath();
         Project project = new Project("My Project 1", timeStamp, path);
         listViewProjects.getItems().add(project);
     }
 
     public void handleBtnNewProject(ActionEvent actionEvent) {
+
     }
 
     public void handleBtnOpen(ActionEvent actionEvent) {
@@ -49,7 +53,7 @@ public class ProjectCreateController implements Initializable {
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/main-window.fxml"));
             final Parent parent = fxmlLoader.load();
-            final MainWindowController mainWindow = fxmlLoader.getController();
+            final MainWindow mainWindow = fxmlLoader.getController();
             mainWindow.setRootTreeView(selectedItem.getName());
             Scene scene = new Scene(parent, 800, 600);
             stage.setTitle("Help Creator");
