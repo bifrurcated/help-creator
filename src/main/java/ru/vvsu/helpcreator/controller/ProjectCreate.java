@@ -4,12 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.Project;
 
@@ -38,8 +41,19 @@ public class ProjectCreate implements Initializable {
         listViewProjects.getItems().add(project);
     }
 
-    public void handleBtnNewProject(ActionEvent actionEvent) {
-
+    public void handleBtnNewProject(ActionEvent actionEvent) throws IOException {
+        Node node = (Node) actionEvent.getSource();
+        Stage projectStage = (Stage) node.getScene().getWindow();
+        Stage newProject = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/new-project.fxml"));
+        final Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(parent, 600, 275);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        newProject.setTitle("Новый проект");
+        newProject.setScene(scene);
+        newProject.initModality(Modality.WINDOW_MODAL);
+        newProject.initOwner(projectStage);
+        newProject.show();
     }
 
     public void handleBtnOpen(ActionEvent actionEvent) {
