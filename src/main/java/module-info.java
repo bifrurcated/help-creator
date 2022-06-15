@@ -10,6 +10,7 @@ module ru.vvsu.helpcreator {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.antdesignicons;
     requires org.kordamp.bootstrapfx.core;
+    requires java.prefs;
 
     opens ru.vvsu.helpcreator to javafx.fxml;
     exports ru.vvsu.helpcreator;

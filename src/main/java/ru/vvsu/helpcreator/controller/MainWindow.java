@@ -11,11 +11,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ru.vvsu.helpcreator.model.ContextMenuTreeCell;
 import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.utils.DefaultValues;
+import ru.vvsu.helpcreator.utils.ViewWindow;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -114,7 +117,10 @@ public class MainWindow implements Initializable {
     public void handleMenuItemSave(ActionEvent actionEvent) {
     }
 
-    public void handleMenuItemClose(ActionEvent actionEvent) {
+    public void handleMenuItemClose(ActionEvent actionEvent) throws IOException {
+        Stage stage = new Stage();
+        ViewWindow.openProjectCreate(stage);
+        ViewWindow.closeWindow(treeView.getParent());
     }
 
     public void handleMenuItemAbout(ActionEvent actionEvent) {

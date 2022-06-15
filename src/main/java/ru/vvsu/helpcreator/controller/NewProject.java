@@ -17,20 +17,33 @@ import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
 import ru.vvsu.helpcreator.Main;
+import ru.vvsu.helpcreator.model.Project;
+import ru.vvsu.helpcreator.utils.FileHelper;
+import ru.vvsu.helpcreator.utils.ProjectSettings;
+import ru.vvsu.helpcreator.utils.ViewWindow;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
+import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
+
 public class NewProject implements Initializable {
+
+    private final static String PROJECT_SEPARATOR = "::";
 
     @FXML private HBox hBox;
     @FXML private Button btnOk;
@@ -40,15 +53,18 @@ public class NewProject implements Initializable {
     @FXML private TextField textFieldImagePath;
 
     private final Validator validator = new Validator();
-    private final Pattern pattern = Pattern.compile("[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9\\s]{0,31}$");
+    private final Pattern pattern = Pattern.compile("[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9\\s]{0,51}$");
+
+    private Preferences preferences;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        preferences = Preferences.userNodeForPackage(Project.class);
         textFieldProjectName.setText("Новый проект");
         TooltipWrapper<Button> signUpWrapper = new TooltipWrapper<>(
                 btnOk,
                 validator.containsErrorsProperty(),
-                Bindings.concat("Нельзя:\n", validator.createStringBinding())
+                Bindings.concat("Невозможно создать проект:\n", validator.createStringBinding())
         );
         validator.createCheck()
                 .withMethod(c -> {
@@ -62,7 +78,7 @@ public class NewProject implements Initializable {
                 .immediate();
         validator.createCheck()
                 .withMethod(c -> {
-                    if (textFieldProjectPath.getText().isEmpty() || !(new File(textFieldProjectPath.getText()).isDirectory())) {
+                    if (textFieldProjectPath.getText().isEmpty() || !Files.isDirectory(Paths.get(textFieldProjectPath.getText()))) {
                         c.error("Директория проекта не указана или неверна.");
                     }
                 })
@@ -80,6 +96,17 @@ public class NewProject implements Initializable {
     }
 
     public void handleBtnOk(ActionEvent actionEvent) throws IOException {
+        ProjectSettings.putProjectPathIfAbsent(preferences, textFieldProjectPath.getText());
+        final Date time = Calendar.getInstance().getTime();
+        String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
+        System.out.println("ProjectPath: "+textFieldProjectPath.getText());
+        Project project = new Project(textFieldProjectName.getText(), projectCreateTime, textFieldProjectPath.getText(), textFieldImagePath.getText());
+        final Path path = Paths.get(textFieldProjectPath.getText());
+        if (!Files.exists(path)){
+            Files.createDirectory(path);
+        }
+        FileHelper.serialize(project, textFieldProjectPath.getText()+File.separator+PROJECT_SETTING_NAME);
+
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/main-window.fxml"));
         final Parent parent = fxmlLoader.load();
@@ -89,17 +116,11 @@ public class NewProject implements Initializable {
         stage.setTitle("Help Creator");
         stage.setScene(scene);
         stage.show();
-        Node node = (Node) actionEvent.getSource();
-        Stage thisStage = (Stage) node.getScene().getWindow();
-        Stage owner = (Stage) thisStage.getOwner().getScene().getWindow();
-        thisStage.close();
-        owner.close();
+        ViewWindow.closeWindowWithOwner(actionEvent);
     }
 
     public void handleBtnCancel(ActionEvent actionEvent) {
-        Node node = (Node) actionEvent.getSource();
-        Stage thisStage = (Stage) node.getScene().getWindow();
-        thisStage.close();
+        ViewWindow.closeWindow(actionEvent);
     }
 
     public void handleBtnSetImage(ActionEvent actionEvent) {
