@@ -107,15 +107,7 @@ public class NewProject implements Initializable {
         }
         FileHelper.serialize(project, textFieldProjectPath.getText()+File.separator+PROJECT_SETTING_NAME);
 
-        Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/main-window.fxml"));
-        final Parent parent = fxmlLoader.load();
-        final MainWindow mainWindow = fxmlLoader.getController();
-        mainWindow.setRootTreeView(textFieldProjectName.getText());
-        Scene scene = new Scene(parent, 800, 600);
-        stage.setTitle("Help Creator");
-        stage.setScene(scene);
-        stage.show();
+        ViewWindow.openMainWindow(project);
         ViewWindow.closeWindowWithOwner(actionEvent);
     }
 
