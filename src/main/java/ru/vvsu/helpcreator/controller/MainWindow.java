@@ -98,7 +98,8 @@ public class MainWindow implements Initializable {
 
         MenuItem addPage = new MenuItem("Add page");
         MenuItem addSubPage = new MenuItem("Add subpage");
-        ContextMenu contextMenu = new ContextMenu(addPage, addSubPage);
+        MenuItem deletePage = new MenuItem("Delete");
+        ContextMenu contextMenu = new ContextMenu(addPage, addSubPage, deletePage);
         treeView.setCellFactory(ContextMenuTreeCell.forTreeView(contextMenu));
 
         addPage.setOnAction(actionEvent -> {
@@ -124,6 +125,10 @@ public class MainWindow implements Initializable {
             final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
             selectedItem.getChildren().add(newTreeItem);
             selectedItem.setExpanded(true);
+        });
+        deletePage.setOnAction(actionEvent -> {
+            final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            selectedItem.getParent().getChildren().remove(selectedItem);
         });
     }
 
