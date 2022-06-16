@@ -1,10 +1,13 @@
 package ru.vvsu.helpcreator.utils;
 
+import java.io.File;
 import java.util.prefs.Preferences;
 
 public class ProjectSettings {
     public static final String ARTIFACT_ID = "help-creator";
     public static final String PROJECT_SETTING_NAME = "project.settings";
+    public static final String SAVE_SUFFIX = ".save";
+    public static final String DIR_SAVE = File.separator + "save";
 
     public static boolean isNotUseProjectPath(Preferences preferences, String projectPath) {
         final int projectCount = preferences.getInt(ARTIFACT_ID, 0);
