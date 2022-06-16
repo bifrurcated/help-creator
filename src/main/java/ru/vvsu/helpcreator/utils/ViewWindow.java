@@ -5,10 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.controller.MainWindow;
+import ru.vvsu.helpcreator.model.Project;
 
 import java.io.IOException;
 
@@ -24,16 +26,29 @@ public class ViewWindow {
         stage.show();
     }
 
-    public static void openMainWindow(String projectName) throws IOException {
+    public static void openMainWindow(Project project) throws IOException {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/main-window.fxml"));
         final Parent parent = fxmlLoader.load();
         final MainWindow mainWindow = fxmlLoader.getController();
-        mainWindow.setRootTreeView(projectName);
+        mainWindow.setRootTreeView(project);
         Scene scene = new Scene(parent, 800, 600);
         stage.setTitle("Help Creator");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void openNewProject(Stage projectStage) throws IOException {
+        Stage newProject = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/new-project.fxml"));
+        final Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(parent, 600, 275);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        newProject.setTitle("Новый проект");
+        newProject.setScene(scene);
+        newProject.initModality(Modality.WINDOW_MODAL);
+        newProject.initOwner(projectStage);
+        newProject.show();
     }
 
     public static void closeWindow(Event event) {

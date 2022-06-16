@@ -2,23 +2,18 @@ package ru.vvsu.helpcreator.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
-import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.FileHelper;
 import ru.vvsu.helpcreator.utils.ProjectSettings;
 import ru.vvsu.helpcreator.utils.ViewWindow;
+import ru.vvsu.helpcreator.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,16 +71,7 @@ public class ProjectCreate implements Initializable {
     public void handleBtnNewProject(ActionEvent actionEvent) throws IOException {
         Node node = (Node) actionEvent.getSource();
         Stage projectStage = (Stage) node.getScene().getWindow();
-        Stage newProject = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/new-project.fxml"));
-        final Parent parent = fxmlLoader.load();
-        Scene scene = new Scene(parent, 600, 275);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        newProject.setTitle("Новый проект");
-        newProject.setScene(scene);
-        newProject.initModality(Modality.WINDOW_MODAL);
-        newProject.initOwner(projectStage);
-        newProject.show();
+        ViewWindow.openNewProject(projectStage);
     }
 
     public void handleBtnOpen(ActionEvent actionEvent) {
@@ -95,7 +81,7 @@ public class ProjectCreate implements Initializable {
                             ProjectSettings.putProjectPathIfAbsent(preferences, Paths.get(projectPath).getParent().toString());
                             saveEditTimeProject(project, projectPath);
                             try {
-                                ViewWindow.openMainWindow(project.getName());
+                                ViewWindow.openMainWindow(project);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -109,7 +95,7 @@ public class ProjectCreate implements Initializable {
         final Project selectedItem = listViewProjects.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             saveEditTimeProject(selectedItem, selectedItem.getPath() + File.separator + PROJECT_SETTING_NAME);
-            ViewWindow.openMainWindow(selectedItem.getName());
+            ViewWindow.openMainWindow(selectedItem);
             ViewWindow.closeWindow(mouseEvent);
         }
     }
