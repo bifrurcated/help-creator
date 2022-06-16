@@ -7,22 +7,19 @@ import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-public class ContextMenuTreeCell<T> extends TreeCell<T> {
+public class ContextMenuTreeCell extends TreeCell<Page> {
 
-    public static <T> Callback<TreeView<T>,TreeCell<T>> forTreeView(ContextMenu contextMenu) {
+    public static Callback<TreeView<Page>,TreeCell<Page>> forTreeView(ContextMenu contextMenu) {
         return forTreeView(contextMenu, null);
     }
 
-    public static <T> Callback<TreeView<T>,TreeCell<T>> forTreeView(final ContextMenu contextMenu, final Callback<TreeView<T>,TextFieldTreeCell<T>> cellFactory) {
+    public static Callback<TreeView<Page>,TreeCell<Page>> forTreeView(final ContextMenu contextMenu, final Callback<TreeView<Page>,TextFieldTreeCell<Page>> cellFactory) {
         return listView -> {
-            TextFieldTreeCell<T> cell = cellFactory == null ? new DefaultTreeCell<>() : cellFactory.call(listView);
+            TextFieldTreeCell<Page> cell = cellFactory == null ? new DefaultTreeCell<>() : cellFactory.call(listView);
             cell.setContextMenu(contextMenu);
-            if (cell.getItem() instanceof Page) {
-                final Page item = (Page) cell.getItem();
-                StringConverter<Page> converter = new PageStringConverter(item);
-                cell.setConverter((StringConverter<T>) converter);
-            }
-
+            final Page item = cell.getItem();
+            StringConverter<Page> converter = new PageStringConverter(item);
+            cell.setConverter( converter);
             return cell;
         };
     }
