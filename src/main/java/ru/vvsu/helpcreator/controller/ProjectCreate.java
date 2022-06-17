@@ -4,16 +4,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.FileHelper;
 import ru.vvsu.helpcreator.utils.ProjectSettings;
 import ru.vvsu.helpcreator.utils.ViewWindow;
-import ru.vvsu.helpcreator.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import static ru.vvsu.helpcreator.utils.ProjectSettings.ARTIFACT_ID;
@@ -60,12 +64,34 @@ public class ProjectCreate implements Initializable {
                 }
             }
         }
-        final Date time = Calendar.getInstance().getTime();
-        time.setTime(10000);
-        String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
-        String path = new File("").getAbsolutePath();
-        Project project = new Project("My Project 1", timeStamp, path);
-        listViewProjects.getItems().add(project);
+
+        listViewProjects.setCellFactory(lv -> {
+            TextFieldListCell<Project> cell = new TextFieldListCell<>();
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem deleteMenu = new MenuItem("Удалить проект");
+            deleteMenu.setOnAction((event) -> {
+                final Project project = cell.getItem();
+                listViewProjects.getItems().remove(project);
+                try {
+                    for (var key: preferences.keys()) {
+                        final String val = preferences.get(key, "");
+                        if (!val.isEmpty()) {
+                            if (val.equals(project.getPath())) {
+                                preferences.remove(key);
+                                final int anInt = preferences.getInt(ARTIFACT_ID, 0);
+                                preferences.putInt(ARTIFACT_ID, anInt-1);
+                                break;
+                            }
+                        }
+                    }
+                } catch (BackingStoreException e) {
+                    e.printStackTrace();
+                }
+            });
+            contextMenu.getItems().addAll(deleteMenu);
+            cell.setContextMenu(contextMenu);
+            return cell;
+        });
     }
 
     public void handleBtnNewProject(ActionEvent actionEvent) throws IOException {
