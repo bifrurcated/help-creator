@@ -8,6 +8,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
@@ -40,6 +43,14 @@ import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
 
 public class MainWindow implements Initializable {
 
+    @FXML
+    private MenuItem menuItemDelete;
+    @FXML
+    private MenuItem menuItemNew;
+    @FXML
+    private MenuItem menuItemOpen;
+    @FXML
+    private MenuItem menuItemSave;
     @FXML
     private TreeView<Page> treeView;
     @FXML
@@ -103,40 +114,24 @@ public class MainWindow implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         treeView.setEditable(true);
 
-        MenuItem addPage = new MenuItem("Add page");
-        MenuItem addSubPage = new MenuItem("Add subpage");
-        MenuItem deletePage = new MenuItem("Delete");
-        ContextMenu contextMenu = new ContextMenu(addPage, addSubPage, deletePage);
+        MenuItem addPageItem = new MenuItem("Add page");
+        MenuItem addSubpageItem = new MenuItem("Add subpage");
+        MenuItem deletePageItem = new MenuItem("Delete");
+        ContextMenu contextMenu = new ContextMenu(addPageItem, addSubpageItem, deletePageItem);
         treeView.setCellFactory(ContextMenuTreeCell.forTreeView(contextMenu));
 
-        addPage.setOnAction(actionEvent -> {
-            Page newPage = new Page("new Page", String.format(DefaultValues.HTMLPAGE, "new Page"));
-            TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
-            final TreeItem<Page> parent = treeView.getSelectionModel().getSelectedItem().getParent();
-            if (parent != null) {
-                int index = parent
-                        .getChildren()
-                        .indexOf(treeView.getSelectionModel().getSelectedItem()) + 1;
-                parent.getChildren().add(index, newTreeItem);
-            } else {
-                final TreeItem<Page> root = treeView.getRoot();
-                int index = root
-                        .getChildren()
-                        .indexOf(treeView.getSelectionModel().getSelectedItem()) + 1;
-                root.getChildren().add(index, newTreeItem);
-            }
-        });
-        addSubPage.setOnAction(actionEvent -> {
-            Page newPage = new Page("new Subpage", String.format(DefaultValues.HTMLPAGE, "new Subpage"));
-            TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
-            final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            selectedItem.getChildren().add(newTreeItem);
-            selectedItem.setExpanded(true);
-        });
-        deletePage.setOnAction(actionEvent -> {
-            final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            selectedItem.getParent().getChildren().remove(selectedItem);
-        });
+        addPageItem.setOnAction(this::handleMenuItemAddPage);
+        addSubpageItem.setOnAction(this::handleMenuItemAddSubpage);
+        deletePageItem.setOnAction(this::handleMenuItemDeletePage);
+
+        KeyCombination newShortcut = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+        menuItemNew.setAccelerator(newShortcut);
+        KeyCombination openShortcut = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
+        menuItemOpen.setAccelerator(openShortcut);
+        KeyCombination saveShortcut = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+        menuItemSave.setAccelerator(saveShortcut);
+        KeyCombination deleteShortcut = new KeyCodeCombination(KeyCode.DELETE);
+        menuItemDelete.setAccelerator(deleteShortcut);
     }
 
     @FXML
@@ -323,5 +318,36 @@ public class MainWindow implements Initializable {
             return selectedFile.getAbsolutePath();
         }
         return null;
+    }
+
+    public void handleMenuItemAddPage(ActionEvent actionEvent) {
+        Page newPage = new Page("new Page", String.format(DefaultValues.HTMLPAGE, "new Page"));
+        TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
+        final TreeItem<Page> parent = treeView.getSelectionModel().getSelectedItem().getParent();
+        if (parent != null) {
+            int index = parent
+                    .getChildren()
+                    .indexOf(treeView.getSelectionModel().getSelectedItem()) + 1;
+            parent.getChildren().add(index, newTreeItem);
+        } else {
+            final TreeItem<Page> root = treeView.getRoot();
+            int index = root
+                    .getChildren()
+                    .indexOf(treeView.getSelectionModel().getSelectedItem()) + 1;
+            root.getChildren().add(index, newTreeItem);
+        }
+    }
+
+    public void handleMenuItemAddSubpage(ActionEvent actionEvent) {
+        Page newPage = new Page("new Subpage", String.format(DefaultValues.HTMLPAGE, "new Subpage"));
+        TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
+        final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
+        selectedItem.getChildren().add(newTreeItem);
+        selectedItem.setExpanded(true);
+    }
+
+    public void handleMenuItemDeletePage(ActionEvent actionEvent) {
+        final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
+        selectedItem.getParent().getChildren().remove(selectedItem);
     }
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.web.HTMLEditor?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vvsu.helpcreator.controller.MainWindow">
    <children>
@@ -14,23 +15,60 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemNew" text="New" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemOpen" text="Open" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemSave" text="Save" />
-              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Close" />
+                  <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#handleMenuItemNew" text="New">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-folder-add" iconSize="16" />
+                     </graphic></MenuItem>
+                  <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#handleMenuItemOpen" text="Open">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-folder-open" iconSize="16" />
+                     </graphic></MenuItem>
+                  <MenuItem fx:id="menuItemSave" mnemonicParsing="false" onAction="#handleMenuItemSave" text="Save">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-save" iconSize="16" />
+                     </graphic></MenuItem>
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Close">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-close" iconSize="16" />
+                     </graphic></MenuItem>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onConvertToHTML" text="Convert to html" />
-                  <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddPage" text="Add page">
+                     <graphic>
+                        <FontIcon iconColor="#6ca82b" iconLiteral="anto-file-add" iconSize="16" />
+                     </graphic></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddSubpage" text="Add subpage">
+                     <graphic>
+                        <FontIcon iconColor="#347566" iconLiteral="anto-file-add" iconSize="16" />
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" onAction="#handleMenuItemDeletePage" text="Delete">
+                     <graphic>
+                        <FontIcon iconColor="#7c1d1d" iconLiteral="anto-delete" iconSize="16" />
+                     </graphic>
+                  </MenuItem>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About" />
-            </items>
+          <Menu mnemonicParsing="false" text="Convert">
+               <items>
+              <MenuItem mnemonicParsing="false" onAction="#onConvertToHTML" text="HTML">
+                     <graphic>
+                        <FontIcon iconColor="#cd7138" iconLiteral="anto-html5" iconSize="16" />
+                     </graphic>
+                  </MenuItem>
+               </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About">
+                     <graphic>
+                        <FontIcon iconColor="#1a1f83" iconLiteral="anto-info-circle" iconSize="16" />
+                     </graphic>
+                  </MenuItem>
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
       <SplitPane layoutY="65.0" orientation="VERTICAL" prefHeight="335.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
