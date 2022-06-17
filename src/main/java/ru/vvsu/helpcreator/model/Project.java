@@ -58,6 +58,6 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        return this.name + "\t\t" + this.path + "\t\t" + this.date;
+        return this.name + "\r\r" + this.path + "\r" + this.date;
     }
 }

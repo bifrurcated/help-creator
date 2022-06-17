@@ -1,5 +1,7 @@
 package ru.vvsu.helpcreator.controller;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.prefs.BackingStoreException;
@@ -92,6 +95,31 @@ public class ProjectCreate implements Initializable {
             cell.setContextMenu(contextMenu);
             return cell;
         });
+
+
+        FilteredList<Project> filteredData = new FilteredList<>(listViewProjects.getItems(), project -> true);
+
+        textFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> filteredData.setPredicate(project ->{
+            if(newValue == null || newValue.isEmpty()){
+                return true;
+            }
+            String lowerCaseFilter = newValue.toLowerCase();
+            return project.getName().toLowerCase().contains(lowerCaseFilter);
+        }));
+
+        SortedList<Project> sortedData = new SortedList<>(filteredData);
+        sortedData.setComparator((o1, o2) -> {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            try {
+                final Date date1 = dateFormat.parse(o1.getDate());
+                final Date date2 = dateFormat.parse(o2.getDate());
+                return Long.compare(date2.getTime(), date1.getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 1;
+        });
+        listViewProjects.setItems(sortedData);
     }
 
     public void handleBtnNewProject(ActionEvent actionEvent) throws IOException {
