@@ -11,8 +11,11 @@ public class Page implements Serializable {
     private String html;
     private boolean isOpen;
     private int id;
+    private int parentId;
     private int childId;
     private int nextId;
+
+    private transient boolean isRoot;
 
     public Page() {}
 
@@ -69,6 +72,22 @@ public class Page implements Serializable {
         this.nextId = nextId;
     }
 
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean root) {
+        isRoot = root;
+    }
+
     @Override
     public String toString()  {
         return this.name;
@@ -79,11 +98,11 @@ public class Page implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Page page = (Page) o;
-        return isOpen == page.isOpen && id == page.id && childId == page.childId && nextId == page.nextId && Objects.equals(name, page.name) && Objects.equals(html, page.html);
+        return isOpen == page.isOpen && id == page.id && parentId == page.parentId && childId == page.childId && nextId == page.nextId && Objects.equals(name, page.name) && Objects.equals(html, page.html);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, html, isOpen, id, childId, nextId);
+        return Objects.hash(name, html, isOpen, id, parentId, childId, nextId);
     }
 }

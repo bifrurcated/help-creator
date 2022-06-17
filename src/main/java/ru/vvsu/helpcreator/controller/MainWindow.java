@@ -19,18 +19,24 @@ import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.DefaultValues;
 import ru.vvsu.helpcreator.utils.FileHelper;
+import ru.vvsu.helpcreator.utils.Navigation;
 import ru.vvsu.helpcreator.utils.ViewWindow;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static ru.vvsu.helpcreator.utils.ProjectSettings.DIR_SAVE;
-import static ru.vvsu.helpcreator.utils.ProjectSettings.SAVE_SUFFIX;
+import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
 
 public class MainWindow implements Initializable {
 
@@ -39,6 +45,7 @@ public class MainWindow implements Initializable {
     @FXML
     private HTMLEditor htmlEditor;
 
+    private final AtomicInteger countPage = new AtomicInteger(1);
     private final List<Page> pages = new LinkedList<>();
     private ArrayList<Page> loadPages;
 
@@ -133,8 +140,73 @@ public class MainWindow implements Initializable {
     }
 
     @FXML
-    protected void onConvertToHTML(ActionEvent actionEvent) {
-        System.out.println(htmlEditor.getHtmlText());
+    protected void onConvertToHTML(ActionEvent actionEvent) throws IOException, URISyntaxException {
+        handleMenuItemSave();
+        Path path = Paths.get(project.getPath() + DIR_HTML);
+        FileHelper.deleteDirectory(path.toFile());
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
+        }
+        URI uri = ClassLoader.getSystemResource(PATH_TO_TEMPLATE).toURI();
+        String mainPath = Paths.get(uri).toString();
+        FileHelper.copyDirectory(mainPath, path.toString());
+        Navigation navigation = new Navigation(pages);
+        final String indexPath = Paths.get(uri) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
+        final String indexWritePath = path + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
+        File indexFile = new File(indexWritePath);
+        try (
+                final BufferedReader bufferedReader
+                        = Files.newBufferedReader(Paths.get(indexPath), StandardCharsets.UTF_8);
+                final BufferedWriter bufferedWriter
+                        = Files.newBufferedWriter(indexFile.toPath(), StandardCharsets.UTF_8)
+        ) {
+            String readLine;
+            while ((readLine = bufferedReader.readLine()) != null) {
+                bufferedWriter.write(readLine+"\n");
+                if (readLine.strip().equals("<div onclick=\"tree_toggle(arguments[0])\">")) {
+                    bufferedWriter.write(navigation.generateNavigation(0));
+                }
+                if (readLine.strip().equals("<section>")) {
+                    bufferedWriter.write(removeContented(pages.get(0).getHtml()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        uri = ClassLoader.getSystemResource(PATH_TO_TEMPLATE_PAGE).toURI();
+        for (int i = 1; i < pages.size(); i++) {
+            final Page page = pages.get(i);
+            final String pageFileName = ((page.getId()-1) + "_" + page.getName() + HTML_SUFFIX)
+                    .replace(" ", "_");
+            final String pagePath = Paths.get(uri) + File.separator + PAGE_NAME + HTML_SUFFIX;
+            final String pageWritePath = path + File.separator + DIR_PAGES + pageFileName;
+            File pageFile = new File(pageWritePath);
+            try (
+                    final BufferedReader bufferedReader
+                            = Files.newBufferedReader(Paths.get(pagePath), StandardCharsets.UTF_8);
+                    final BufferedWriter bufferedWriter
+                            = Files.newBufferedWriter(pageFile.toPath(), StandardCharsets.UTF_8)
+            ) {
+                String readLine;
+                while ((readLine = bufferedReader.readLine()) != null) {
+                    bufferedWriter.write(readLine);
+                    if (readLine.strip().equals("<div onclick=\"tree_toggle(arguments[0])\">")) {
+                        bufferedWriter.newLine();
+                        bufferedWriter.write(navigation.generateNavigation(i));
+                    }
+                    if (readLine.strip().equals("<section>")) {
+                        bufferedWriter.newLine();
+                        bufferedWriter.write(removeContented(pages.get(i).getHtml()));
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String removeContented(String html) {
+        return html.replaceFirst("contenteditable=\"true\"", "");
     }
 
     public void handleMouseClicked(MouseEvent mouseEvent) {
@@ -190,12 +262,15 @@ public class MainWindow implements Initializable {
         if (previousPageSelected != null) {
             previousPageSelected.getValue().setHtml(htmlEditor.getHtmlText());
         }
-        traversalTreeView(treeItems.get(0), 1);
+        if (countPage.get() > 1) {
+            countPage.set(1);
+        }
+        traversalTreeView(treeItems.get(0));
         System.out.println("pages size: "+pages.size());
+        pages.sort(Comparator.comparingInt(Page::getId));
         pages.forEach(page -> {
             System.out.println("page: "+page.getName() + ", id: " + page.getId());
         });
-        pages.sort(Comparator.comparingInt(Page::getId));
         Path path = Paths.get(project.getPath() + DIR_SAVE);
         if (!Files.exists(path)) {
             Files.createDirectory(path);
@@ -214,20 +289,23 @@ public class MainWindow implements Initializable {
         Main.hostServices.showDocument("https://github.com/bifrurcated/help-creator");
     }
 
-    private void traversalTreeView(TreeItem<Page> treeItem, int countPage) {
+    private void traversalTreeView(TreeItem<Page> treeItem) {
         final Page page = treeItem.getValue();
-        System.out.println("page: "+page.getName());
+        System.out.println("page: " + page.getName());
         page.setOpen(treeItem.isExpanded());
-        page.setId(countPage);
+        page.setId(countPage.get());
+        if (treeItem.getParent() != null && treeItem.getParent() != treeView.getRoot()) {
+            page.setParentId(treeItem.getParent().getValue().getId());
+        }
         final ObservableList<TreeItem<Page>> itemChildren = treeItem.getChildren();
         if (!itemChildren.isEmpty()) {
-            page.setChildId(++countPage);
-            traversalTreeView(itemChildren.get(0), countPage);
+            page.setChildId(countPage.incrementAndGet());
+            traversalTreeView(itemChildren.get(0));
         }
         final TreeItem<Page> nextSibling = treeItem.nextSibling();
         if (nextSibling != null) {
-            page.setNextId(++countPage);
-            traversalTreeView(nextSibling, countPage);
+            page.setNextId(countPage.incrementAndGet());
+            traversalTreeView(nextSibling);
         }
         pages.add(page);
     }
