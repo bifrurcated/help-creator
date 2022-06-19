@@ -54,6 +54,12 @@ public class FileHelper {
                 });
     }
 
+    public static void copyFile(Path from, Path to) throws IOException {
+        if (from.toFile().isFile()) {
+            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
     public static void deleteDirectory(File directory) {
 
         // if the file is directory or not
@@ -78,11 +84,15 @@ public class FileHelper {
         }
     }
 
-    public static String directoryChoicer() {
+    public static String directoryChoicer(String initialDirectory) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Выбрать директорию проекта");
-        final String path = new File("").getAbsolutePath();
-
+        final String path;
+        if (initialDirectory == null || initialDirectory.isEmpty()) {
+            path = new File("").getAbsolutePath();
+        } else {
+            path = initialDirectory;
+        }
         directoryChooser.setInitialDirectory(new File(path));
         File selectedDirectory = directoryChooser.showDialog(null);
         if(selectedDirectory != null){

@@ -23,7 +23,7 @@
                      <graphic>
                         <FontIcon iconLiteral="anto-folder-open" iconSize="16" />
                      </graphic></MenuItem>
-                  <MenuItem fx:id="menuItemSettings" mnemonicParsing="false" onAction="#handleMenuItemSettings" text="Settings">
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemSettings" text="Settings">
                      <graphic>
                         <FontIcon iconLiteral="anto-setting" iconSize="16" />
                      </graphic>

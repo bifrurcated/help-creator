@@ -14,6 +14,7 @@ public class ProjectPreferences {
     public static final String DIR_PAGES = "pages" + File.separator;
     public static final String PATH_TO_TEMPLATE = "ru/vvsu/helpcreator/template/";
     public static final String PATH_TO_TEMPLATE_PAGES = "ru/vvsu/helpcreator/template/pages/";
+    public static final String PATH_TO_LOGO = "img/logo.png";
     public static final String MAIN_PAGE_NAME = "index";
     public static final String PAGE_NAME = "page";
 

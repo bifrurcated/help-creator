@@ -35,8 +35,6 @@ import static ru.vvsu.helpcreator.utils.ProjectPreferences.PROJECT_SETTING_NAME;
 
 public class NewProject implements Initializable {
 
-    private final static String PROJECT_SEPARATOR = "::";
-
     @FXML private HBox hBox;
     @FXML private Button btnOk;
     @FXML private ImageView imageViewProjectIcon;
@@ -82,7 +80,7 @@ public class NewProject implements Initializable {
     }
 
     public void handleBtnOpenFolder(ActionEvent actionEvent) {
-        Optional<String> directoryPathOptional = Optional.ofNullable(FileHelper.directoryChoicer());
+        Optional<String> directoryPathOptional = Optional.ofNullable(FileHelper.directoryChoicer(""));
         directoryPathOptional.ifPresent(path -> textFieldProjectPath.setText(path));
     }
 

@@ -2,6 +2,8 @@ package ru.vvsu.helpcreator.model;
 
 import java.io.Serializable;
 
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.DIR_HTML;
+
 public class Project implements Serializable {
 
     private static final long serialVersionUID = 8693707378041282986L;
@@ -9,15 +11,8 @@ public class Project implements Serializable {
     private String name;
     private String date;
     private String path;
-    private String imagePath;
-    private String productName;
-    private String productVersion;
-    private String typeDoc;
-    private String companyName;
-    private String year;
-
-
-    public Project() {}
+    private final Settings settings;
+    private final HtmlGenerateData htmlGenerateData;
 
     public Project(String name, String date, String path) {
         this(name, date, path, "");
@@ -27,7 +22,8 @@ public class Project implements Serializable {
         this.name = name;
         this.date = date;
         this.path = path;
-        this.imagePath = imagePath;
+        this.settings = new Settings(imagePath);
+        this.htmlGenerateData = new HtmlGenerateData(path+DIR_HTML, false, false);
     }
 
     public String getName() {
@@ -54,52 +50,12 @@ public class Project implements Serializable {
         this.path = path;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductVersion() {
-        return productVersion;
-    }
-
-    public void setProductVersion(String productVersion) {
-        this.productVersion = productVersion;
-    }
-
-    public String getTypeDoc() {
-        return typeDoc;
-    }
-
-    public void setTypeDoc(String typeDoc) {
-        this.typeDoc = typeDoc;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
+    public HtmlGenerateData getHtmlGenerateData() {
+        return htmlGenerateData;
     }
 
     @Override

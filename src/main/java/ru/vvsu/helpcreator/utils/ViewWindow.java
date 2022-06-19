@@ -9,11 +9,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import ru.vvsu.helpcreator.Main;
+import ru.vvsu.helpcreator.controller.HtmlGenerate;
 import ru.vvsu.helpcreator.controller.MainWindow;
 import ru.vvsu.helpcreator.controller.SettingsProject;
+import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ViewWindow {
 
@@ -68,6 +71,23 @@ public class ViewWindow {
         settingsStage.initModality(Modality.WINDOW_MODAL);
         settingsStage.initOwner(projectStage);
         settingsStage.show();
+    }
+
+    public static void openHtmlGenerate(Stage projectStage, Project project, List<Page> pages, MainWindow mainWindow) throws IOException {
+        Stage htmlGenerateStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/html-generate.fxml"));
+        final Parent parent = fxmlLoader.load();
+        final HtmlGenerate htmlGenerate = fxmlLoader.getController();
+        htmlGenerate.setProject(project);
+        htmlGenerate.setPages(pages);
+        htmlGenerate.setMainWindow(mainWindow);
+        Scene scene = new Scene(parent);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        htmlGenerateStage.setTitle("HTML-генератор");
+        htmlGenerateStage.setScene(scene);
+        htmlGenerateStage.initModality(Modality.WINDOW_MODAL);
+        htmlGenerateStage.initOwner(projectStage);
+        htmlGenerateStage.show();
     }
 
     public static void closeWindow(Event event) {

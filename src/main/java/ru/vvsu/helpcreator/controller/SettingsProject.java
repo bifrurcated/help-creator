@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
 import ru.vvsu.helpcreator.model.Project;
+import ru.vvsu.helpcreator.model.Settings;
 import ru.vvsu.helpcreator.utils.FileHelper;
 import ru.vvsu.helpcreator.utils.ProjectPreferences;
 import ru.vvsu.helpcreator.utils.ViewWindow;
@@ -66,9 +67,10 @@ public class SettingsProject implements Initializable {
 
     public void setProject(Project project) {
         this.project = project;
-        if (!project.getImagePath().isEmpty()) {
-            textFieldImagePath.setText(project.getImagePath());
-            final Image image = new Image("file:/" + project.getImagePath(), 128D, 80D, true, false);
+        final Settings settings = project.getSettings();
+        if (!settings.getImagePath().isEmpty()) {
+            textFieldImagePath.setText(settings.getImagePath());
+            final Image image = new Image("file:/" + settings.getImagePath(), 128D, 80D, true, false);
             imageViewProjectIcon.setImage(image);
         }
         if (project.getName() != null && !project.getName().isEmpty()) {
@@ -77,20 +79,20 @@ public class SettingsProject implements Initializable {
         if (project.getPath() != null && !project.getPath().isEmpty()) {
             textFieldProjectPath.setText(project.getPath());
         }
-        if (project.getProductName() != null && !project.getProductName().isEmpty()) {
-            textFieldProductName.setText(project.getProductName());
+        if (settings.getProductName() != null && !settings.getProductName().isEmpty()) {
+            textFieldProductName.setText(settings.getProductName());
         }
-        if (project.getProductVersion() != null && !project.getProductVersion().isEmpty()) {
-            textFieldProductVersion.setText(project.getProductVersion());
+        if (settings.getProductVersion() != null && !settings.getProductVersion().isEmpty()) {
+            textFieldProductVersion.setText(settings.getProductVersion());
         }
-        if (project.getTypeDoc() != null && !project.getTypeDoc().isEmpty()) {
-            textFieldTypeDocumentation.setText(project.getTypeDoc());
+        if (settings.getTypeDoc() != null && !settings.getTypeDoc().isEmpty()) {
+            textFieldTypeDocumentation.setText(settings.getTypeDoc());
         }
-        if (project.getCompanyName() != null && !project.getCompanyName().isEmpty()) {
-            textFieldCompanyName.setText(project.getCompanyName());
+        if (settings.getCompanyName() != null && !settings.getCompanyName().isEmpty()) {
+            textFieldCompanyName.setText(settings.getCompanyName());
         }
-        if (project.getYear() != null && !project.getYear().isEmpty()) {
-            textFieldYear.setText(project.getYear());
+        if (settings.getYear() != null && !settings.getYear().isEmpty()) {
+            textFieldYear.setText(settings.getYear());
         }
     }
 
@@ -141,7 +143,7 @@ public class SettingsProject implements Initializable {
     }
 
     public void handleBtnOpenFolder(ActionEvent actionEvent) {
-        Optional<String> directoryPathOptional = Optional.ofNullable(FileHelper.directoryChoicer());
+        Optional<String> directoryPathOptional = Optional.ofNullable(FileHelper.directoryChoicer(project.getPath()));
         directoryPathOptional.ifPresent(path -> textFieldProjectPath.setText(path));
     }
 
@@ -149,15 +151,16 @@ public class SettingsProject implements Initializable {
         ProjectPreferences.putProjectPathIfAbsent(preferences, textFieldProjectPath.getText());
         final Date time = Calendar.getInstance().getTime();
         String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
+        final Settings settings = project.getSettings();
         project.setDate(projectCreateTime);
-        project.setImagePath(textFieldImagePath.getText());
         project.setName(textFieldProjectName.getText());
         project.setPath(textFieldProjectPath.getText());
-        project.setProductName(textFieldProductName.getText());
-        project.setProductVersion(textFieldProductVersion.getText());
-        project.setTypeDoc(textFieldTypeDocumentation.getText());
-        project.setCompanyName(textFieldCompanyName.getText());
-        project.setYear(textFieldYear.getText());
+        settings.setImagePath(textFieldImagePath.getText());
+        settings.setProductName(textFieldProductName.getText());
+        settings.setProductVersion(textFieldProductVersion.getText());
+        settings.setTypeDoc(textFieldTypeDocumentation.getText());
+        settings.setCompanyName(textFieldCompanyName.getText());
+        settings.setYear(textFieldYear.getText());
         final Path path = Paths.get(textFieldProjectPath.getText());
         if (!Files.exists(path)){
             Files.createDirectory(path);
