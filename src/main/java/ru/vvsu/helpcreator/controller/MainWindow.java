@@ -108,9 +108,9 @@ public class MainWindow implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         treeView.setEditable(true);
 
-        MenuItem addPageItem = new MenuItem("Add page");
-        MenuItem addSubpageItem = new MenuItem("Add subpage");
-        MenuItem deletePageItem = new MenuItem("Delete");
+        MenuItem addPageItem = new MenuItem("Добавить страницу");
+        MenuItem addSubpageItem = new MenuItem("Добавить подстраницу");
+        MenuItem deletePageItem = new MenuItem("Удалить");
         ContextMenu contextMenu = new ContextMenu(addPageItem, addSubpageItem, deletePageItem);
         treeView.setCellFactory(ContextMenuTreeCell.forTreeView(contextMenu));
 

@@ -12,6 +12,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <javafx.version>17.0.2</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <mainClass>ru.vvsu.helpcreator.Main</mainClass>
     </properties>
 
     <dependencies>
@@ -26,27 +30,27 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- plugin for javafx -->
@@ -92,25 +96,57 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <mainClass>${mainClass}</mainClass>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
-                <executions>
-                    <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>ru.vvsu.helpcreator/ru.vvsu.helpcreator.Main</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
+                <version>0.0.5</version>
+                <configuration>
+                    <mainClass>helpcreator/ru.vvsu.helpcreator.Main</mainClass>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>helpcreator</launcher>
+                    <jlinkImageName>helpcreator</jlinkImageName>
+                    <jlinkZipName>helpcreator</jlinkZipName>
+                </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <name>HelpCreator</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>ru.vvsu</vendor>
+                    <module>helpcreator/ru.vvsu.helpcreator.Main</module>
+                    <runtimeImage>target/helpcreator</runtimeImage>
+                    <destination>target/dist</destination>
+                    <winMenu>true</winMenu>
+                    <winShortcut>true</winShortcut>
+                    <winDirChooser>true</winDirChooser>
+                    <winMenuGroup>Utilities</winMenuGroup>
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxPackageName>helpcreator</linuxPackageName>
+                    <linuxAppCategory>Utilities</linuxAppCategory>
+                    <linuxMenuGroup>Utilities</linuxMenuGroup>
+                    <icon>${project.basedir}/helpcreator.ico</icon>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                </configuration>
+            </plugin>
+
+
         </plugins>
     </build>
 </project>

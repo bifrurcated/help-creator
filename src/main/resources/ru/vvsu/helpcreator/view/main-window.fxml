@@ -13,50 +13,50 @@
    <children>
       <MenuBar prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Файл">
             <items>
-                  <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#handleMenuItemNew" text="New">
+                  <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#handleMenuItemNew" text="Новый проект">
                      <graphic>
                         <FontIcon iconLiteral="anto-folder-add" iconSize="16" />
                      </graphic></MenuItem>
-                  <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#handleMenuItemOpen" text="Open">
+                  <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#handleMenuItemOpen" text="Загрузить сохранение">
                      <graphic>
                         <FontIcon iconLiteral="anto-folder-open" iconSize="16" />
                      </graphic></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemSettings" text="Settings">
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemSettings" text="Настройки">
                      <graphic>
                         <FontIcon iconLiteral="anto-setting" iconSize="16" />
                      </graphic>
                   </MenuItem>
-                  <MenuItem fx:id="menuItemSave" mnemonicParsing="false" onAction="#handleMenuItemSave" text="Save">
+                  <MenuItem fx:id="menuItemSave" mnemonicParsing="false" onAction="#handleMenuItemSave" text="Сохранить">
                      <graphic>
                         <FontIcon iconLiteral="anto-save" iconSize="16" />
                      </graphic></MenuItem>
-              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Close">
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Закрыть проект">
                      <graphic>
                         <FontIcon iconLiteral="anto-close" iconSize="16" />
                      </graphic></MenuItem>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Редактирование">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddPage" text="Add page">
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddPage" text="Добавить страницу">
                      <graphic>
                         <FontIcon iconColor="#6ca82b" iconLiteral="anto-file-add" iconSize="16" />
                      </graphic></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddSubpage" text="Add subpage">
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAddSubpage" text="Добавить подстраницу">
                      <graphic>
                         <FontIcon iconColor="#347566" iconLiteral="anto-file-add" iconSize="16" />
                      </graphic>
                   </MenuItem>
-                  <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" onAction="#handleMenuItemDeletePage" text="Delete">
+                  <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" onAction="#handleMenuItemDeletePage" text="Удалить">
                      <graphic>
                         <FontIcon iconColor="#7c1d1d" iconLiteral="anto-delete" iconSize="16" />
                      </graphic>
                   </MenuItem>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Convert">
+          <Menu mnemonicParsing="false" text="Конвертация">
                <items>
               <MenuItem mnemonicParsing="false" onAction="#onConvertToHTML" text="HTML">
                      <graphic>
@@ -65,9 +65,9 @@
                   </MenuItem>
                </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Help">
+            <Menu mnemonicParsing="false" text="Помощь">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About">
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="О программе">
                      <graphic>
                         <FontIcon iconColor="#1a1f83" iconLiteral="anto-info-circle" iconSize="16" />
                      </graphic>
