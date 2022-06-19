@@ -1,4 +1,4 @@
-module ru.vvsu.helpcreator {
+module helpcreator {
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
