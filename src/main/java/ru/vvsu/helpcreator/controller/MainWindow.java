@@ -148,62 +148,99 @@ public class MainWindow implements Initializable {
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
-        URI uri = ClassLoader.getSystemResource(PATH_TO_TEMPLATE).toURI();
-        String mainPath = Paths.get(uri).toString();
+        URI uriTemplate = ClassLoader.getSystemResource(PATH_TO_TEMPLATE).toURI();
+        String mainPath = Paths.get(uriTemplate).toString();
         FileHelper.copyDirectory(mainPath, path.toString());
+
         Navigation navigation = new Navigation(pages);
-        final String indexPath = Paths.get(uri) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
+
+        final String indexPath = Paths.get(uriTemplate) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
         final String indexWritePath = path + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
-        File indexFile = new File(indexWritePath);
+        createPage(navigation, indexPath, indexWritePath, 0);
+
+        URI uriTemplatePages = ClassLoader.getSystemResource(PATH_TO_TEMPLATE_PAGES).toURI();
+        for (int i = 1; i < pages.size(); i++) {
+            final Page page = pages.get(i);
+            final String pageFileName = ((page.getId()-1) + "_" + page.getName() + HTML_SUFFIX).replace(" ", "_");
+            final String pagePath = Paths.get(uriTemplatePages) + File.separator + PAGE_NAME + HTML_SUFFIX;
+            final String pageWritePath = path + File.separator + DIR_PAGES + pageFileName;
+            createPage(navigation, pagePath, pageWritePath, i);
+        }
+    }
+
+    private void createPage(Navigation navigation, String readerPath, String writerPath, int index) {
+        final String pageHeader = getPageHeader(project);
+        final String pageFooter = getPageFooter(project);
+        File writeFile = new File(writerPath);
         try (
                 final BufferedReader bufferedReader
-                        = Files.newBufferedReader(Paths.get(indexPath), StandardCharsets.UTF_8);
+                        = Files.newBufferedReader(Paths.get(readerPath), StandardCharsets.UTF_8);
                 final BufferedWriter bufferedWriter
-                        = Files.newBufferedWriter(indexFile.toPath(), StandardCharsets.UTF_8)
+                        = Files.newBufferedWriter(writeFile.toPath(), StandardCharsets.UTF_8)
         ) {
             String readLine;
             while ((readLine = bufferedReader.readLine()) != null) {
-                bufferedWriter.write(readLine+"\n");
+                bufferedWriter.write(readLine);
+                if (readLine.strip().equals("<div class=\"container-header\">")) {
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(pageHeader);
+                }
                 if (readLine.strip().equals("<div onclick=\"tree_toggle(arguments[0])\">")) {
-                    bufferedWriter.write(navigation.generateNavigation(0));
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(navigation.generateNavigation(index));
                 }
                 if (readLine.strip().equals("<section>")) {
-                    bufferedWriter.write(removeContented(pages.get(0).getHtml()));
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(removeContented(pages.get(index).getHtml()));
+                }
+                if (readLine.strip().equals("<div class=\"container-footer\">")) {
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(pageFooter);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uri = ClassLoader.getSystemResource(PATH_TO_TEMPLATE_PAGE).toURI();
-        for (int i = 1; i < pages.size(); i++) {
-            final Page page = pages.get(i);
-            final String pageFileName = ((page.getId()-1) + "_" + page.getName() + HTML_SUFFIX)
-                    .replace(" ", "_");
-            final String pagePath = Paths.get(uri) + File.separator + PAGE_NAME + HTML_SUFFIX;
-            final String pageWritePath = path + File.separator + DIR_PAGES + pageFileName;
-            File pageFile = new File(pageWritePath);
-            try (
-                    final BufferedReader bufferedReader
-                            = Files.newBufferedReader(Paths.get(pagePath), StandardCharsets.UTF_8);
-                    final BufferedWriter bufferedWriter
-                            = Files.newBufferedWriter(pageFile.toPath(), StandardCharsets.UTF_8)
-            ) {
-                String readLine;
-                while ((readLine = bufferedReader.readLine()) != null) {
-                    bufferedWriter.write(readLine);
-                    if (readLine.strip().equals("<div onclick=\"tree_toggle(arguments[0])\">")) {
-                        bufferedWriter.newLine();
-                        bufferedWriter.write(navigation.generateNavigation(i));
-                    }
-                    if (readLine.strip().equals("<section>")) {
-                        bufferedWriter.newLine();
-                        bufferedWriter.write(removeContented(pages.get(i).getHtml()));
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    }
+
+    private String getPageHeader(Project project) {
+        final String h2 = "<h2>";
+        final String h2End = "</h2>\n";
+        final String h3 = "<h3>%s</h3>\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append(h2);
+        if (project.getProductName() != null) {
+            sb.append(project.getProductName());
         }
+        if (project.getProductVersion() != null) {
+            if (project.getProductName() != null) {
+                sb.append(" ");
+            }
+            sb.append(project.getProductVersion());
+        }
+        sb.append(h2End);
+        if (project.getTypeDoc() != null) {
+            sb.append(String.format(h3, project.getTypeDoc()));
+        }
+        return sb.toString();
+    }
+
+    private String getPageFooter(Project project) {
+        final String h4 = "<h4>";
+        final String h4End = "</h4>";
+        StringBuilder sb = new StringBuilder();
+        sb.append(h4);
+        if (project.getCompanyName() != null) {
+            sb.append(project.getCompanyName());
+        }
+        if (project.getYear() != null) {
+            if (project.getCompanyName() != null && !project.getCompanyName().isEmpty()) {
+                sb.append(",");
+            }
+            sb.append(" ").append(project.getYear());
+        }
+        sb.append(h4End);
+        return sb.toString();
     }
 
     private String removeContented(String html) {
