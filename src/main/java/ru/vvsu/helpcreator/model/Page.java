@@ -1,10 +1,12 @@
 package ru.vvsu.helpcreator.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Page implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -522212596571546003L;
 
     private String name;
@@ -17,7 +19,9 @@ public class Page implements Serializable {
 
     private transient boolean isRoot;
 
-    public Page() {}
+    public Page() {
+        this("","");
+    }
 
     public Page(String name, String html) {
         this.name = name;

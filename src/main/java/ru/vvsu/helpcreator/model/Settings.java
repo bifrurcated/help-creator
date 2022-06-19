@@ -1,10 +1,12 @@
 package ru.vvsu.helpcreator.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Settings implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -2271176427530950929L;
 
     private String imagePath;

@@ -1,11 +1,13 @@
 package ru.vvsu.helpcreator.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.DIR_HTML;
 
 public class Project implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 8693707378041282986L;
 
     private String name;
