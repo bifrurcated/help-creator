@@ -1,10 +1,12 @@
 package ru.vvsu.helpcreator.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class HtmlGenerateData implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -7757665205212112374L;
 
     private String htmlPath;
