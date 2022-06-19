@@ -12,12 +12,12 @@ import java.nio.file.StandardCopyOption;
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class FileHelper {
+    
     public static void serialize(Serializable object, String path) {
         try (
                 FileOutputStream outputStream = new FileOutputStream(path);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)
-        )
-        {
+        ) {
             objectOutputStream.writeObject(object);
         } catch (IOException e) {
             e.printStackTrace();
@@ -25,11 +25,10 @@ public class FileHelper {
     }
 
     public static Object deserialize(String path) {
-        try(
+        try (
                 FileInputStream fileInputStream = new FileInputStream(path);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)
-        )
-        {
+        ) {
             return objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -39,8 +38,8 @@ public class FileHelper {
 
     public static void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation) throws IOException {
         Files.walk(Paths.get(sourceDirectoryLocation))
-                .filter(source -> !source.getFileName().toString().equals(MAIN_PAGE_NAME+HTML_SUFFIX))
-                .filter(source -> !source.getFileName().toString().equals(PAGE_NAME+HTML_SUFFIX))
+                .filter(source -> !source.getFileName().toString().equals(MAIN_PAGE_NAME + HTML_SUFFIX))
+                .filter(source -> !source.getFileName().toString().equals(PAGE_NAME + HTML_SUFFIX))
                 .forEach(source -> {
                     Path destination = Paths.get(destinationDirectoryLocation, source.toString()
                             .substring(sourceDirectoryLocation.length()));
@@ -61,25 +60,17 @@ public class FileHelper {
     }
 
     public static void deleteDirectory(File directory) {
-
-        // if the file is directory or not
-        if(directory.isDirectory()) {
+        if (directory.isDirectory()) {
             File[] files = directory.listFiles();
-
-            // if the directory contains any file
-            if(files != null) {
-                for(File file : files) {
-
-                    // recursive call if the subdirectory is non-empty
+            if (files != null) {
+                for (File file : files) {
                     deleteDirectory(file);
                 }
             }
         }
-
-        if(directory.delete()) {
+        if (directory.delete()) {
             System.out.println(directory + " is deleted");
-        }
-        else {
+        } else {
             System.out.println("Directory not deleted");
         }
     }
@@ -95,7 +86,7 @@ public class FileHelper {
         }
         directoryChooser.setInitialDirectory(new File(path));
         File selectedDirectory = directoryChooser.showDialog(null);
-        if(selectedDirectory != null){
+        if (selectedDirectory != null) {
             return selectedDirectory.getAbsolutePath();
         }
         return null;

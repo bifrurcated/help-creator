@@ -21,7 +21,7 @@ public class PageStringConverter extends StringConverter<Page> {
         if (page == null) {
             Page newPage = new Page();
             newPage.setName(val);
-            newPage.setHtml(String.format(DefaultValues.HTMLPAGE, val));
+            newPage.setHtml(String.format(DefaultValues.HTML_PAGE, val));
             return newPage;
         } else {
             page.setName(val);

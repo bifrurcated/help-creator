@@ -22,17 +22,11 @@ import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.DefaultValues;
 import ru.vvsu.helpcreator.utils.FileHelper;
-import ru.vvsu.helpcreator.utils.Navigation;
 import ru.vvsu.helpcreator.utils.ViewWindow;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -82,7 +76,7 @@ public class MainWindow implements Initializable {
             Files.createDirectory(path);
         }
         Runnable defaultPages = () -> {
-            final Page page2 = new Page("page 1", String.format(DefaultValues.HTMLPAGE, "page 1"));
+            final Page page2 = new Page("page 1", String.format(DefaultValues.HTML_PAGE, "page 1"));
             TreeItem<Page> treeItem1 = new TreeItem<>(page2, defaultIcon);
             rootItem.getChildren().add(treeItem1);
             htmlEditor.setHtmlText(treeItem1.getValue().getHtml());
@@ -261,7 +255,7 @@ public class MainWindow implements Initializable {
     }
 
     public void handleMenuItemAddPage(ActionEvent actionEvent) {
-        Page newPage = new Page("new Page", String.format(DefaultValues.HTMLPAGE, "new Page"));
+        Page newPage = new Page("new Page", String.format(DefaultValues.HTML_PAGE, "new Page"));
         TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
         final TreeItem<Page> parent = treeView.getSelectionModel().getSelectedItem().getParent();
         if (parent != null) {
@@ -279,7 +273,7 @@ public class MainWindow implements Initializable {
     }
 
     public void handleMenuItemAddSubpage(ActionEvent actionEvent) {
-        Page newPage = new Page("new Subpage", String.format(DefaultValues.HTMLPAGE, "new Subpage"));
+        Page newPage = new Page("new Subpage", String.format(DefaultValues.HTML_PAGE, "new Subpage"));
         TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
         final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
         selectedItem.getChildren().add(newTreeItem);
