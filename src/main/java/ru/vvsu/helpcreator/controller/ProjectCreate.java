@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.FileHelper;
-import ru.vvsu.helpcreator.utils.ProjectSettings;
+import ru.vvsu.helpcreator.utils.ProjectPreferences;
 import ru.vvsu.helpcreator.utils.ViewWindow;
 
 import java.io.File;
@@ -31,8 +31,8 @@ import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import static ru.vvsu.helpcreator.utils.ProjectSettings.ARTIFACT_ID;
-import static ru.vvsu.helpcreator.utils.ProjectSettings.PROJECT_SETTING_NAME;
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.ARTIFACT_ID;
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.PROJECT_SETTING_NAME;
 
 public class ProjectCreate implements Initializable {
 
@@ -132,7 +132,7 @@ public class ProjectCreate implements Initializable {
         Optional.ofNullable(projectChoicer())
                 .ifPresent(projectPath -> Optional.ofNullable((Project) FileHelper.deserialize(projectPath))
                         .ifPresent(project -> {
-                            ProjectSettings.putProjectPathIfAbsent(preferences, Paths.get(projectPath).getParent().toString());
+                            ProjectPreferences.putProjectPathIfAbsent(preferences, Paths.get(projectPath).getParent().toString());
                             saveEditTimeProject(project, projectPath);
                             try {
                                 ViewWindow.openMainWindow(project);

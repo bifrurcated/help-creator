@@ -39,10 +39,12 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class MainWindow implements Initializable {
 
+    @FXML
+    private MenuItem menuItemSettings;
     @FXML
     private MenuItem menuItemDelete;
     @FXML
@@ -136,7 +138,11 @@ public class MainWindow implements Initializable {
 
     @FXML
     protected void onConvertToHTML(ActionEvent actionEvent) throws IOException, URISyntaxException {
-        handleMenuItemSave();
+        final ObservableList<TreeItem<Page>> treeItems = treeView.getRoot().getChildren();
+        if (treeItems.isEmpty()) {
+            return;
+        }
+        generatePages(treeItems);
         Path path = Paths.get(project.getPath() + DIR_HTML);
         FileHelper.deleteDirectory(path.toFile());
         if (!Files.exists(path)) {
@@ -251,6 +257,16 @@ public class MainWindow implements Initializable {
         if (treeItems.isEmpty()) {
             return;
         }
+        generatePages(treeItems);
+        Path path = Paths.get(project.getPath() + DIR_SAVE);
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
+        }
+        FileHelper.serialize(pages.toArray(new Page[0]), path + File.separator + project.getName() + SAVE_SUFFIX);
+        System.out.println("serialize");
+    }
+
+    private void generatePages(ObservableList<TreeItem<Page>> treeItems){
         if (!pages.isEmpty()) {
             pages.clear();
         }
@@ -266,12 +282,6 @@ public class MainWindow implements Initializable {
         pages.forEach(page -> {
             System.out.println("page: "+page.getName() + ", id: " + page.getId());
         });
-        Path path = Paths.get(project.getPath() + DIR_SAVE);
-        if (!Files.exists(path)) {
-            Files.createDirectory(path);
-        }
-        FileHelper.serialize(pages.toArray(new Page[0]), path + File.separator + project.getName() + SAVE_SUFFIX);
-        System.out.println("serialize");
     }
 
     public void handleMenuItemClose(ActionEvent actionEvent) throws IOException {
@@ -349,5 +359,21 @@ public class MainWindow implements Initializable {
     public void handleMenuItemDeletePage(ActionEvent actionEvent) {
         final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
         selectedItem.getParent().getChildren().remove(selectedItem);
+    }
+
+    public void handleMenuItemSettings(ActionEvent actionEvent) throws IOException {
+        Stage projectStage = (Stage) treeView.getParent().getScene().getWindow();
+        ViewWindow.openSettingsProject(projectStage, project, this);
+    }
+
+    public TreeItem<Page> getRootItem () {
+        if (treeView.getRoot() != null) {
+            return treeView.getRoot();
+        }
+        return null;
+    }
+
+    public void refreshTreeView() {
+        treeView.refresh();
     }
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class Navigation {
     private static final String isRoot = "IsRoot";

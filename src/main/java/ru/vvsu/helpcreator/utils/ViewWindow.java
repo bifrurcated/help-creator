@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.controller.MainWindow;
+import ru.vvsu.helpcreator.controller.SettingsProject;
 import ru.vvsu.helpcreator.model.Project;
 
 import java.io.IOException;
@@ -49,6 +50,24 @@ public class ViewWindow {
         newProject.initModality(Modality.WINDOW_MODAL);
         newProject.initOwner(projectStage);
         newProject.show();
+    }
+
+    public static void openSettingsProject(Stage projectStage, Project project, MainWindow mainWindow) throws IOException {
+        Stage settingsStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/settings.fxml"));
+        final Parent parent = fxmlLoader.load();
+        final SettingsProject settingsProject = fxmlLoader.getController();
+        settingsProject.setProject(project);
+        settingsProject.setMainWindow(mainWindow);
+        Scene scene = new Scene(parent);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        settingsStage.setMaxWidth(618);
+        settingsStage.setMaxHeight(578);
+        settingsStage.setTitle("Настройки проекта");
+        settingsStage.setScene(scene);
+        settingsStage.initModality(Modality.WINDOW_MODAL);
+        settingsStage.initOwner(projectStage);
+        settingsStage.show();
     }
 
     public static void closeWindow(Event event) {

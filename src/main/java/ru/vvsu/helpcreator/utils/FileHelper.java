@@ -1,12 +1,15 @@
 package ru.vvsu.helpcreator.utils;
 
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import static ru.vvsu.helpcreator.utils.ProjectSettings.*;
+import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class FileHelper {
     public static void serialize(Serializable object, String path) {
@@ -73,5 +76,34 @@ public class FileHelper {
         else {
             System.out.println("Directory not deleted");
         }
+    }
+
+    public static String directoryChoicer() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Выбрать директорию проекта");
+        final String path = new File("").getAbsolutePath();
+
+        directoryChooser.setInitialDirectory(new File(path));
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if(selectedDirectory != null){
+            return selectedDirectory.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public static String imageChoicer() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выбрать изображение проекта");
+        final String path = new File("").getAbsolutePath();
+        fileChooser.setInitialDirectory(new File(path));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("IMAGE", "*.png", "*.jpg", "*.gif", "*.bmp"),
+                new FileChooser.ExtensionFilter("All file", "*.*")
+        );
+        final File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
     }
 }

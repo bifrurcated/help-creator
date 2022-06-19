@@ -11,7 +11,6 @@
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
 <AnchorPane prefHeight="275.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vvsu.helpcreator.controller.NewProject">
    <children>
       <TextField fx:id="textFieldProjectPath" layoutX="179.0" layoutY="151.0" prefHeight="25.0" prefWidth="371.0" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="50.0" />
@@ -32,7 +31,7 @@
          </graphic>
       </Button>
       <Button layoutX="524.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleBtnCancel" styleClass="btn" text="Отмена" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="18.0" />
-      <TextField fx:id="textFieldImagePath" layoutX="179.0" layoutY="42.0" prefHeight="25.0" prefWidth="371.0" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="50.0" />
+      <TextField fx:id="textFieldImagePath" layoutX="179.0" layoutY="42.0" prefHeight="25.0" prefWidth="371.0" promptText="Путь к логотипу проекта" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="50.0" />
       <Button layoutX="550.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleBtnSetImage" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="18.0">
          <graphic>
             <FontIcon iconLiteral="anto-file-image" iconSize="16" />

@@ -2,8 +2,9 @@ package ru.vvsu.helpcreator.utils;
 
 import java.io.File;
 import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
 
-public class ProjectSettings {
+public class ProjectPreferences {
     public static final String ARTIFACT_ID = "help-creator";
     public static final String PROJECT_SETTING_NAME = "project.settings";
     public static final String SAVE_SUFFIX = ".save";
@@ -15,6 +16,8 @@ public class ProjectSettings {
     public static final String PATH_TO_TEMPLATE_PAGE = "ru/vvsu/helpcreator/template/pages/";
     public static final String MAIN_PAGE_NAME = "index";
     public static final String PAGE_NAME = "page";
+
+    public static final Pattern PATTERN_PROJECT_NAME = Pattern.compile("[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9\\s]{0,51}$");
 
     public static boolean isNotUseProjectPath(Preferences preferences, String projectPath) {
         final int projectCount = preferences.getInt(ARTIFACT_ID, 0);
