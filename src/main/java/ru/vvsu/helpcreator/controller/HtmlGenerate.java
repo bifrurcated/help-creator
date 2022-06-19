@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
+import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.HtmlGenerateData;
 import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
@@ -142,6 +143,12 @@ public class HtmlGenerate implements Initializable{
                 FileHelper.serialize(project, project.getPath() + File.separator + PROJECT_SETTING_NAME);
             }
             hBoxGenerate.setDisable(false);
+            if (checkBoxOpenDoc.isSelected()) {
+                Main.hostServices.showDocument(project.getHtmlGenerateData().getHtmlPath() + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX);
+            }
+            if (checkBoxOpenFolder.isSelected()) {
+                Main.hostServices.showDocument(project.getHtmlGenerateData().getHtmlPath());
+            }
         });
 
         progressBar.progressProperty().bind(service.progressProperty().add(1L));
