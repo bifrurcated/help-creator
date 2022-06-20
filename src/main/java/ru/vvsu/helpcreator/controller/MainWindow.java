@@ -70,6 +70,7 @@ public class MainWindow implements Initializable {
         TreeItem<Page> rootItem = new TreeItem<>(projectPage, defaultIcon);
         rootItem.setExpanded(true);
         treeView.setRoot(rootItem);
+        ContextMenuTreeCell.setRoot(rootItem);
 
         Path path = Paths.get(project.getPath() + DIR_SAVE);
         if (!Files.exists(path)) {
@@ -282,7 +283,9 @@ public class MainWindow implements Initializable {
 
     public void handleMenuItemDeletePage(ActionEvent actionEvent) {
         final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
-        selectedItem.getParent().getChildren().remove(selectedItem);
+        if (selectedItem != null && treeView.getRoot() != selectedItem) {
+            selectedItem.getParent().getChildren().remove(selectedItem);
+        }
     }
 
     public void handleMenuItemSettings(ActionEvent actionEvent) throws IOException {

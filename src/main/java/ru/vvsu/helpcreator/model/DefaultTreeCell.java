@@ -13,6 +13,9 @@ public class DefaultTreeCell<T> extends TextFieldTreeCell<T> {
             FontIcon icon = new FontIcon("anto-file-text");
             icon.setIconSize(8);
             setGraphic(icon);
+            if (ContextMenuTreeCell.getRootValue() != null && page.equals(ContextMenuTreeCell.getRootValue())) {
+                setEditable(false);
+            }
         } else if (empty) {
             setText(null);
             setGraphic(null);
