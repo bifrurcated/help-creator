@@ -47,18 +47,22 @@ public class ProjectCreate implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listViewProjects.getStylesheets().add(Objects.requireNonNull(Main.class.getResource("css/list-cell.css")).toExternalForm());
         preferences = Preferences.userNodeForPackage(Project.class);
+        int index = 0;
         final int projectCount = preferences.getInt(ARTIFACT_ID, 0);
         if (projectCount > 0) {
-            System.out.println("projectCount: "+projectCount);
             for (int i = 1; i <= projectCount; i++) {
                 final String projectPath = preferences.get(ARTIFACT_ID + i, "");
-                System.out.println("projectPath: "+projectPath);
                 if (projectPath.isEmpty()) {
                     preferences.remove(ARTIFACT_ID + i);
-                    return;
+                    index++;
+                    preferences.putInt(ARTIFACT_ID, projectCount-index);
+                    continue;
+                }
+                if (index > 0) {
+                    preferences.put(ARTIFACT_ID + (i - index), projectPath);
+                    preferences.remove(ARTIFACT_ID + i);
                 }
                 if (Files.isDirectory(Paths.get(projectPath))) {
-                    System.out.println("isDirectory: true");
                     final File file = new File(projectPath + File.separator + PROJECT_SETTING_NAME);
                     if (file.isFile()) {
                         Optional.ofNullable((Project) FileHelper.deserialize(file.getAbsolutePath()))
@@ -76,14 +80,20 @@ public class ProjectCreate implements Initializable {
                 final Project project = cell.getItem();
                 listViewProjects.getItems().remove(project);
                 try {
-                    for (var key: preferences.keys()) {
-                        final String val = preferences.get(key, "");
+                    boolean changeNext = false;
+                    final String[] keys = preferences.keys();
+                    for (int i = 0; i < keys.length; i++) {
+                        final String val = preferences.get(keys[i], "");
                         if (!val.isEmpty()) {
                             if (val.equals(project.getPath())) {
-                                preferences.remove(key);
+                                preferences.remove(keys[i]);
+                                changeNext = true;
                                 final int anInt = preferences.getInt(ARTIFACT_ID, 0);
                                 preferences.putInt(ARTIFACT_ID, anInt-1);
-                                break;
+                            }
+                            if (changeNext) {
+                                preferences.put(ARTIFACT_ID + i, val);
+                                preferences.remove(keys[i]);
                             }
                         }
                     }
@@ -99,13 +109,14 @@ public class ProjectCreate implements Initializable {
 
         FilteredList<Project> filteredData = new FilteredList<>(listViewProjects.getItems(), project -> true);
 
-        textFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> filteredData.setPredicate(project ->{
-            if(newValue == null || newValue.isEmpty()){
-                return true;
-            }
-            String lowerCaseFilter = newValue.toLowerCase();
-            return project.getName().toLowerCase().contains(lowerCaseFilter);
-        }));
+        textFieldSearch.textProperty().addListener((observable, oldValue, newValue) ->
+                filteredData.setPredicate(project -> {
+                    if(newValue == null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    return project.getName().toLowerCase().contains(lowerCaseFilter);
+                }));
 
         SortedList<Project> sortedData = new SortedList<>(filteredData);
         sortedData.setComparator((o1, o2) -> {
