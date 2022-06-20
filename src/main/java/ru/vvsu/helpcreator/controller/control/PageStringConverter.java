@@ -1,6 +1,7 @@
-package ru.vvsu.helpcreator.model;
+package ru.vvsu.helpcreator.controller.control;
 
 import javafx.util.StringConverter;
+import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.utils.DefaultValues;
 
 public class PageStringConverter extends StringConverter<Page> {

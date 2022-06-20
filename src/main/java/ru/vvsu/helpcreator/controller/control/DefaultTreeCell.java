@@ -1,8 +1,9 @@
-package ru.vvsu.helpcreator.model;
+package ru.vvsu.helpcreator.controller.control;
 
 import javafx.scene.Node;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ru.vvsu.helpcreator.model.Page;
 
 public class DefaultTreeCell<T> extends TextFieldTreeCell<T> {
     @Override
@@ -13,7 +14,8 @@ public class DefaultTreeCell<T> extends TextFieldTreeCell<T> {
             FontIcon icon = new FontIcon("anto-file-text");
             icon.setIconSize(8);
             setGraphic(icon);
-            if (ContextMenuTreeCell.getRootValue() != null && page.equals(ContextMenuTreeCell.getRootValue())) {
+            if (ContextMenuTreeCell.getRootValue() != null &&
+                    page.equals(ContextMenuTreeCell.getRootValue())) {
                 setEditable(false);
             }
         } else if (empty) {

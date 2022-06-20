@@ -1,4 +1,4 @@
-package ru.vvsu.helpcreator.model;
+package ru.vvsu.helpcreator.controller.control;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TreeCell;
@@ -7,6 +7,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import ru.vvsu.helpcreator.model.Page;
 
 public class ContextMenuTreeCell extends TreeCell<Page> {
 
