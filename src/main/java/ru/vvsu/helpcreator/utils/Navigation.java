@@ -2,7 +2,6 @@ package ru.vvsu.helpcreator.utils;
 
 import ru.vvsu.helpcreator.model.Page;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,21 +32,6 @@ public class Navigation {
 
     public Navigation(List<Page> pages) {
         this.pages = pages;
-    }
-
-    public List<String> generateNavigation() {
-        List<String> navigationPages = new ArrayList<>(pages.size());
-        rootElement(pages.get(0));
-        for (int i = 0; i < pages.size(); i++) {
-            openedId(pages.get(i));
-            nav.append(ul);
-            createNavigationMenu(pages.get(0), i == 0);
-            nav.append(ulEnd);
-            openId.clear();
-            navigationPages.add(nav.toString());
-            nav.setLength(0);
-        }
-        return navigationPages;
     }
 
     public String generateNavigation(int pageCount) {
