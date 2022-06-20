@@ -17,4 +17,5 @@ module helpcreator {
     exports ru.vvsu.helpcreator.controller;
     exports ru.vvsu.helpcreator.model;
     opens ru.vvsu.helpcreator.controller to javafx.fxml;
+    exports ru.vvsu.helpcreator.controller.control;
 }
