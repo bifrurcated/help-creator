@@ -17,7 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ru.vvsu.helpcreator.Main;
-import ru.vvsu.helpcreator.model.ContextMenuTreeCell;
+import ru.vvsu.helpcreator.controller.control.ContextMenuTreeCell;
 import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.DefaultValues;
@@ -77,7 +77,7 @@ public class MainWindow implements Initializable {
             Files.createDirectory(path);
         }
         Runnable defaultPages = () -> {
-            final Page page2 = new Page("page 1", String.format(DefaultValues.HTML_PAGE, "page 1"));
+            final Page page2 = new Page("Страница 1", String.format(DefaultValues.HTML_PAGE, "Страница 1"));
             TreeItem<Page> treeItem1 = new TreeItem<>(page2, defaultIcon);
             rootItem.getChildren().add(treeItem1);
             htmlEditor.setHtmlText(treeItem1.getValue().getHtml());
@@ -256,7 +256,7 @@ public class MainWindow implements Initializable {
     }
 
     public void handleMenuItemAddPage(ActionEvent actionEvent) {
-        Page newPage = new Page("new Page", String.format(DefaultValues.HTML_PAGE, "new Page"));
+        Page newPage = new Page("Новая страница", String.format(DefaultValues.HTML_PAGE, "Новая страница"));
         TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
         final TreeItem<Page> parent = treeView.getSelectionModel().getSelectedItem().getParent();
         if (parent != null) {
@@ -274,7 +274,7 @@ public class MainWindow implements Initializable {
     }
 
     public void handleMenuItemAddSubpage(ActionEvent actionEvent) {
-        Page newPage = new Page("new Subpage", String.format(DefaultValues.HTML_PAGE, "new Subpage"));
+        Page newPage = new Page("Новая подстраница", String.format(DefaultValues.HTML_PAGE, "Новая подстраница"));
         TreeItem<Page> newTreeItem = new TreeItem<>(newPage, defaultIcon);
         final TreeItem<Page> selectedItem = treeView.getSelectionModel().getSelectedItem();
         selectedItem.getChildren().add(newTreeItem);
