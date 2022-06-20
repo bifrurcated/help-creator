@@ -112,7 +112,8 @@ public class SettingsProject implements Initializable {
         validator.createCheck()
                 .withMethod(c -> {
                     if (!PATTERN_PROJECT_NAME.matcher(c.get("projectName")).matches()) {
-                        c.error("Имя проекта не может пустым или начинаться с цифры.");
+                        c.error("Имя проекта не может пустым, начинаться с цифры \n" +
+                                "или превышать размер в 52 символа.");
                     }
                 })
                 .dependsOn("projectName", textFieldProjectName.textProperty())

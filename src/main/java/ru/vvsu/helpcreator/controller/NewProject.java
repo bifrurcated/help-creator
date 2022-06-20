@@ -58,7 +58,8 @@ public class NewProject implements Initializable {
         validator.createCheck()
                 .withMethod(c -> {
                     if (!PATTERN_PROJECT_NAME.matcher(c.get("projectName")).matches()) {
-                        c.error("Имя проекта не может пустым или начинаться с цифры.");
+                        c.error("Имя проекта не может пустым, начинаться с цифры \n" +
+                                "или превышать размер в 52 символа.");
                     }
                 })
                 .dependsOn("projectName", textFieldProjectName.textProperty())
@@ -67,7 +68,8 @@ public class NewProject implements Initializable {
                 .immediate();
         validator.createCheck()
                 .withMethod(c -> {
-                    if (textFieldProjectPath.getText().isEmpty() || !Files.isDirectory(Paths.get(textFieldProjectPath.getText()))) {
+                    if (textFieldProjectPath.getText().isEmpty() ||
+                            !Files.isDirectory(Paths.get(textFieldProjectPath.getText()))) {
                         c.error("Директория проекта не указана или неверна.");
                     }
                 })
