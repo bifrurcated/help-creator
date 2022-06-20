@@ -2,7 +2,7 @@
 A framework for creating help systems.
 
 # Technologies
-[Java 18](https://openjdk.java.net/projects/jdk/11/) \
+[Java 17](https://openjdk.java.net/projects/jdk/11/) \
 [OpenJFX](https://openjfx.io/) \
 [SimplyHTML](https://sourceforge.net/projects/simplyhtml/)
 
