@@ -1,5 +1,5 @@
 # help-creator
-A framework for creating help systems.
+An application for creating help systems.
 
 # Technologies
 [Java 17](https://openjdk.java.net/projects/jdk/11/) \
@@ -7,4 +7,4 @@ A framework for creating help systems.
 [SimplyHTML](https://sourceforge.net/projects/simplyhtml/)
 
 # License
-A free framework for creating help systems.
+A free application for creating help systems.
