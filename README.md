@@ -1,5 +1,5 @@
 # help-creator
-An application for creating help systems.
+A framework for creating reference systems.
 
 # Technologies
 [Java 17](https://openjdk.java.net/projects/jdk/17/) \
