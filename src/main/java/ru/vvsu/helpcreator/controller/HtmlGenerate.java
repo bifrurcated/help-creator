@@ -21,8 +21,6 @@ import ru.vvsu.helpcreator.utils.ViewWindow;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,7 +73,7 @@ public class HtmlGenerate implements Initializable{
         this.mainWindow = mainWindow;
     }
 
-    public void handleBtnGenerate(ActionEvent actionEvent) throws IOException, URISyntaxException {
+    public void handleBtnGenerate(ActionEvent actionEvent) throws IOException {
         hBoxGenerate.setDisable(true);
         final ObservableList<TreeItem<Page>> treeItems = mainWindow.getRootItem().getChildren();
         if (treeItems.isEmpty()) {
@@ -83,12 +81,13 @@ public class HtmlGenerate implements Initializable{
         }
         mainWindow.generatePages(treeItems);
         Path path = Paths.get(textFieldHtmlPath.getText());
+        //TODO: Как правильно удалять внутренние данные, поствить галку гля этого?
+        //FileHelper.deleteDirectory(path.toFile());
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
-        URI uriTemplate = ClassLoader.getSystemResource(PATH_TO_TEMPLATE).toURI();
-        String mainPath = Paths.get(uriTemplate).toString();
 
+        String mainPath = Paths.get(PATH_TO_TEMPLATE).toString();
         FileHelper.copyDirectory(mainPath, path.toString());
 
         final String imagePath = project.getSettings().getImagePath();

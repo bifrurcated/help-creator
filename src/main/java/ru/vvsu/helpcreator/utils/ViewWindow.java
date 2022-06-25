@@ -18,7 +18,7 @@ import ru.vvsu.helpcreator.model.Project;
 import java.io.IOException;
 import java.util.List;
 
-public class ViewWindow {
+public final class ViewWindow {
 
     public static void openProjectCreate(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/project-create.fxml"));

@@ -11,7 +11,7 @@ import java.nio.file.StandardCopyOption;
 
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
-public class FileHelper {
+public final class FileHelper {
     
     public static void serialize(Serializable object, String path) {
         try (

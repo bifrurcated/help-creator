@@ -10,8 +10,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -35,21 +33,19 @@ public class HtmlGenerateTask extends Task<Void> {
     }
 
     @Override
-    protected Void call() throws URISyntaxException, IOException {
+    protected Void call() throws IOException {
         Navigation navigation = new Navigation(pages);
 
-        URI uriTemplate = ClassLoader.getSystemResource(PATH_TO_TEMPLATE).toURI();
-        final String indexPath = Paths.get(uriTemplate) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
+        final String indexPath = Paths.get(PATH_TO_TEMPLATE) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
         final String indexWritePath = path + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
         MAX = Files.newBufferedReader(Paths.get(indexPath)).lines().count() * pages.size();
         progress = 0;
         createPage(navigation, indexPath, indexWritePath, 0);
 
-        URI uriTemplatePages = ClassLoader.getSystemResource(PATH_TO_TEMPLATE_PAGES).toURI();
         for (int i = 1; i < pages.size(); i++) {
             final Page page = pages.get(i);
             final String pageFileName = ((page.getId()-1) + "_" + page.getName() + HTML_SUFFIX).replace(" ", "_");
-            final String pagePath = Paths.get(uriTemplatePages) + File.separator + PAGE_NAME + HTML_SUFFIX;
+            final String pagePath = Paths.get(PATH_TO_TEMPLATE_PAGES) + File.separator + PAGE_NAME + HTML_SUFFIX;
             final String pageWritePath = path + File.separator + DIR_PAGES + pageFileName;
             createPage(navigation, pagePath, pageWritePath, i);
         }
