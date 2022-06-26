@@ -11,6 +11,9 @@ module helpcreator {
     requires org.kordamp.ikonli.antdesignicons;
     requires org.kordamp.bootstrapfx.core;
     requires java.prefs;
+    requires org.slf4j;
+    requires logback.classic;
+    requires logback.core;
 
     opens ru.vvsu.helpcreator to javafx.fxml;
     exports ru.vvsu.helpcreator;

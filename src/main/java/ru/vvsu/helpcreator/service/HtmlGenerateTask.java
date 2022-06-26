@@ -1,10 +1,13 @@
 package ru.vvsu.helpcreator.service;
 
 import javafx.concurrent.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.model.Settings;
 import ru.vvsu.helpcreator.utils.Navigation;
+import ru.vvsu.helpcreator.utils.ProjectPreferences;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,12 +15,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class HtmlGenerateTask extends Task<Void> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlGenerateTask.class);
 
     private final Project project;
     private final List<Page> pages;
@@ -34,31 +39,39 @@ public class HtmlGenerateTask extends Task<Void> {
 
     @Override
     protected Void call() throws IOException {
+        LOGGER.info("call start.");
         Navigation navigation = new Navigation(pages);
-
-        final String indexPath = Paths.get(PATH_TO_TEMPLATE) + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
+        LOGGER.info("create navigation object.");
+        final Path indexPath = ProjectPreferences.getFileSystemPath(PATH_TO_TEMPLATE, MAIN_PAGE_NAME + HTML_SUFFIX);
+        LOGGER.info("indexPath: {}", indexPath);
         final String indexWritePath = path + File.separator + MAIN_PAGE_NAME + HTML_SUFFIX;
-        MAX = Files.newBufferedReader(Paths.get(indexPath)).lines().count() * pages.size();
+        MAX = Files.newBufferedReader(indexPath, StandardCharsets.UTF_8).lines().count() * pages.size();
+        LOGGER.info("MAX: {}", MAX);
         progress = 0;
-        createPage(navigation, indexPath, indexWritePath, 0);
+        final String navIndex = navigation.generateNavigation(0);
+        final String mainIndex = removeContented(pages.get(0).getHtml());
+        createPage(navIndex, mainIndex, indexPath, indexWritePath);
 
+        final Path pagePath = ProjectPreferences.getFileSystemPath(PATH_TO_TEMPLATE_PAGES, PAGE_NAME + HTML_SUFFIX);
+        LOGGER.info("pagePath: {}", pagePath);
         for (int i = 1; i < pages.size(); i++) {
             final Page page = pages.get(i);
             final String pageFileName = ((page.getId()-1) + "_" + page.getName() + HTML_SUFFIX).replace(" ", "_");
-            final String pagePath = Paths.get(PATH_TO_TEMPLATE_PAGES) + File.separator + PAGE_NAME + HTML_SUFFIX;
-            final String pageWritePath = path + File.separator + DIR_PAGES + pageFileName;
-            createPage(navigation, pagePath, pageWritePath, i);
+            final String pageWritePath = this.path + File.separator + DIR_PAGES + pageFileName;
+            final String navPage = navigation.generateNavigation(i);
+            final String mainPage = removeContented(pages.get(i).getHtml());
+            createPage(navPage, mainPage, pagePath, pageWritePath);
         }
         return null;
     }
 
-    private void createPage(Navigation navigation, String readerPath, String writerPath, int index) {
+    private void createPage(String navigation, String main, Path readerPath, String writerPath) {
         final String pageHeader = getPageHeader(project.getSettings());
         final String pageFooter = getPageFooter(project.getSettings());
         File writeFile = new File(writerPath);
         try (
                 final BufferedReader bufferedReader
-                        = Files.newBufferedReader(Paths.get(readerPath), StandardCharsets.UTF_8);
+                        = Files.newBufferedReader(readerPath, StandardCharsets.UTF_8);
                 final BufferedWriter bufferedWriter
                         = Files.newBufferedWriter(writeFile.toPath(), StandardCharsets.UTF_8)
         ) {
@@ -72,11 +85,11 @@ public class HtmlGenerateTask extends Task<Void> {
                 }
                 if (readLine.strip().equals("<div onclick=\"tree_toggle(arguments[0])\">")) {
                     bufferedWriter.newLine();
-                    bufferedWriter.write(navigation.generateNavigation(index));
+                    bufferedWriter.write(navigation);
                 }
                 if (readLine.strip().equals("<section>")) {
                     bufferedWriter.newLine();
-                    bufferedWriter.write(removeContented(pages.get(index).getHtml()));
+                    bufferedWriter.write(main);
                 }
                 if (readLine.strip().equals("<div class=\"container-footer\">")) {
                     bufferedWriter.newLine();

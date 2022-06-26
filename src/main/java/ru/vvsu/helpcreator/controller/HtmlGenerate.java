@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.HtmlGenerateData;
 import ru.vvsu.helpcreator.model.Page;
@@ -32,6 +34,8 @@ import java.util.ResourceBundle;
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class HtmlGenerate implements Initializable{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlGenerate.class);
 
     @FXML
     private  HBox hBoxGenerate;
@@ -87,17 +91,17 @@ public class HtmlGenerate implements Initializable{
             Files.createDirectory(path);
         }
 
-        String mainPath = Paths.get(PATH_TO_TEMPLATE).toString();
-        FileHelper.copyDirectory(mainPath, path.toString());
+        FileHelper.copyDirectory(Path.of(PATH_TO_TEMPLATE), path.toString());
 
         final String imagePath = project.getSettings().getImagePath();
         if (imagePath != null && !imagePath.isEmpty()) {
             FileHelper.copyFile(Paths.get(imagePath), Paths.get(path.toString(), PATH_TO_LOGO));
         }
-
+        LOGGER.info("start task!");
         HtmlGenerateTask htmlGenerateTask = new HtmlGenerateTask(project, pages, path.toString());
         service.setTask(htmlGenerateTask);
         service.restart();
+        LOGGER.info("service is running: {}", service.isRunning());
     }
 
     public void handleBtnCancel(ActionEvent actionEvent) {

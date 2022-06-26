@@ -36,13 +36,13 @@ public final class FileHelper {
         return null;
     }
 
-    public static void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation) throws IOException {
-        Files.walk(Paths.get(sourceDirectoryLocation))
+    public static void copyDirectory(Path sourceDirectoryLocation, String destinationDirectoryLocation) throws IOException {
+        Files.walk(sourceDirectoryLocation)
                 .filter(source -> !source.getFileName().toString().equals(MAIN_PAGE_NAME + HTML_SUFFIX))
                 .filter(source -> !source.getFileName().toString().equals(PAGE_NAME + HTML_SUFFIX))
                 .forEach(source -> {
                     Path destination = Paths.get(destinationDirectoryLocation, source.toString()
-                            .substring(sourceDirectoryLocation.length()));
+                            .substring(sourceDirectoryLocation.toString().length()));
                     if (!(Files.exists(destination) && Files.isDirectory(destination))) {
                         try {
                             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);

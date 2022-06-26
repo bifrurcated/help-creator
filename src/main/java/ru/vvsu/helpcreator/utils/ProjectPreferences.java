@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 public final class ProjectPreferences {
 
     private static URI jrtBaseURI;
+    private static boolean IS_JRT;
 
     public static URI PATH_TO_TEMPLATE;
     public static URI PATH_TO_TEMPLATE_PAGES;
@@ -39,12 +41,25 @@ public final class ProjectPreferences {
             PATH_TO_TEMPLATE = URI.create(String.valueOf(Main.class.getResource("/ru/vvsu/helpcreator/template")));
             PATH_TO_TEMPLATE_PAGES = URI.create(String.valueOf(Main.class.getResource("/ru/vvsu/helpcreator/template/pages")));
         }
+        System.out.println(Main.class.getResource("/ru/vvsu/helpcreator/template/index.html"));
+        System.out.println(PATH_TO_TEMPLATE);
+        System.out.println(PATH_TO_TEMPLATE_PAGES);
+        System.out.println(PATH_TO_TEMPLATE.getPath());
+        System.out.println(PATH_TO_TEMPLATE_PAGES.getPath());
+        FileSystem jrtFS = FileSystems.getFileSystem(URI.create("jrt:/"));
+        System.out.println(Files.exists(Path.of(PATH_TO_TEMPLATE)));
+        Path path = Path.of(PATH_TO_TEMPLATE);
+        System.out.println(Files.exists(jrtFS.getPath(path.toString())));
+        System.out.println(Arrays.toString(getFolderNamesFromDirectory(PATH_TO_TEMPLATE)));
+
+        System.out.println(Path.of(PATH_TO_TEMPLATE) + "/" + MAIN_PAGE_NAME + HTML_SUFFIX);
     }
 
     private static boolean checkJRT() {
         URL resource = Main.class.getResource("/ru/vvsu/helpcreator/template");
         if(resource == null || resource.getProtocol().equals("jrt")) {
             jrtBaseURI = URI.create("jrt:/helpcreator/");
+            IS_JRT = true;
             return true;
         }
         return false;
@@ -69,5 +84,46 @@ public final class ProjectPreferences {
             preferences.putInt(ARTIFACT_ID, projectCount);
             preferences.put(ARTIFACT_ID+projectCount, projectPath);
         }
+    }
+
+    public static Path getFileSystemPath(URI uri, String ... more){
+        if (IS_JRT) {
+            Path path = Path.of(uri);
+            FileSystem fileSystem = FileSystems.getFileSystem(URI.create("jrt:/"));
+            return fileSystem.getPath(path.toString(), more);
+        }
+        return Path.of(Path.of(uri).toString(), more);
+    }
+
+    public static String[] getFolderNamesFromDirectory(URI targetDirectory) {
+        File[] directories = null;
+        String[] folderNames = new String[0];
+        List<String> folderNamesList = new ArrayList<>();
+        if(targetDirectory.getScheme().equals("jrt")) {
+            Path path = Path.of(targetDirectory);
+            assert(Files.exists(path));
+            FileSystem jrtFS = FileSystems.getFileSystem(URI.create("jrt:/"));
+            assert(Files.exists(jrtFS.getPath(path.toString())));
+            try {
+                DirectoryStream<Path> stream = Files.newDirectoryStream(jrtFS.getPath(path.toString()));
+                for(Path entry: stream) {
+                    if(Files.isDirectory(entry)) {
+                        folderNamesList.add(entry.getFileName().toString());
+                    }
+                }
+                folderNames = folderNamesList.toArray(new String[0]);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            directories = new File(targetDirectory).listFiles(File::isDirectory);
+        }
+        if(directories != null) {
+            folderNames = new String[directories.length];
+            for(int i=0; i<directories.length; i++) {
+                folderNames[i] = directories[i].getName();
+            }
+        }
+        return folderNames;
     }
 }
