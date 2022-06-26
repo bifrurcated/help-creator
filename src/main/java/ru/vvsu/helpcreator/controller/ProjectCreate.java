@@ -6,15 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.vvsu.helpcreator.Main;
+import ru.vvsu.helpcreator.controller.control.ProjectItemCell;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.FileHelper;
 import ru.vvsu.helpcreator.utils.ProjectPreferences;
@@ -73,7 +70,7 @@ public class ProjectCreate implements Initializable {
         }
 
         listViewProjects.setCellFactory(lv -> {
-            TextFieldListCell<Project> cell = new TextFieldListCell<>();
+            ListCell<Project> cell = new ProjectItemCell();
             ContextMenu contextMenu = new ContextMenu();
             MenuItem deleteMenu = new MenuItem("Удалить проект");
             deleteMenu.setOnAction((event) -> {
