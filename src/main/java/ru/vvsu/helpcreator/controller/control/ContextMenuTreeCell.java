@@ -19,7 +19,7 @@ public class ContextMenuTreeCell extends TreeCell<Page> {
 
     public static Callback<TreeView<Page>,TreeCell<Page>> forTreeView(final ContextMenu contextMenu, final Callback<TreeView<Page>,TextFieldTreeCell<Page>> cellFactory) {
         return listView -> {
-            TextFieldTreeCell<Page> cell = cellFactory == null ? new DefaultTreeCell<>() : cellFactory.call(listView);
+            TextFieldTreeCell<Page> cell = cellFactory == null ? new PageTreeCell() : cellFactory.call(listView);
             cell.setContextMenu(contextMenu);
             final Page item = cell.getItem();
             StringConverter<Page> converter = new PageStringConverter(item);
