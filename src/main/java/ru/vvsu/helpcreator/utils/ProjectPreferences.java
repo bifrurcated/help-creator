@@ -41,18 +41,6 @@ public final class ProjectPreferences {
             PATH_TO_TEMPLATE = URI.create(String.valueOf(Main.class.getResource("/ru/vvsu/helpcreator/template")));
             PATH_TO_TEMPLATE_PAGES = URI.create(String.valueOf(Main.class.getResource("/ru/vvsu/helpcreator/template/pages")));
         }
-        System.out.println(Main.class.getResource("/ru/vvsu/helpcreator/template/index.html"));
-        System.out.println(PATH_TO_TEMPLATE);
-        System.out.println(PATH_TO_TEMPLATE_PAGES);
-        System.out.println(PATH_TO_TEMPLATE.getPath());
-        System.out.println(PATH_TO_TEMPLATE_PAGES.getPath());
-        FileSystem jrtFS = FileSystems.getFileSystem(URI.create("jrt:/"));
-        System.out.println(Files.exists(Path.of(PATH_TO_TEMPLATE)));
-        Path path = Path.of(PATH_TO_TEMPLATE);
-        System.out.println(Files.exists(jrtFS.getPath(path.toString())));
-        System.out.println(Arrays.toString(getFolderNamesFromDirectory(PATH_TO_TEMPLATE)));
-
-        System.out.println(Path.of(PATH_TO_TEMPLATE) + "/" + MAIN_PAGE_NAME + HTML_SUFFIX);
     }
 
     private static boolean checkJRT() {

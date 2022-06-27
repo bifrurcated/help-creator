@@ -1,8 +1,8 @@
 package ru.vvsu.helpcreator.service;
 
 import javafx.concurrent.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.vvsu.helpcreator.model.Page;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.model.Settings;
@@ -22,7 +22,7 @@ import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class HtmlGenerateTask extends Task<Void> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlGenerateTask.class);
+    private static final Logger LOGGER = LogManager.getLogger(HtmlGenerateTask.class);
 
     private final Project project;
     private final List<Page> pages;

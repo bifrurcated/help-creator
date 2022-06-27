@@ -14,8 +14,9 @@
         <junit.version>5.8.2</junit.version>
         <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>18.0.1</javafx.version>
-        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
         <mainClass>ru.vvsu.helpcreator.Main</mainClass>
+        <jlink-image-name>LogbackClassic</jlink-image-name>
+        <ini4j-jar-name>logback-classic.jar</ini4j-jar-name>
     </properties>
 
     <dependencies>
@@ -31,96 +32,36 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
             <version>${javafx.version}</version>
-            <!--classifier>win</classifier-->
+            <classifier>win</classifier>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-web</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>linux</classifier>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-web</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>mac</classifier>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <!--classifier>win</classifier-->
+            <classifier>win</classifier>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-controls</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>linux</classifier>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-controls</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>mac</classifier>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
-            <!--classifier>win</classifier-->
+            <classifier>win</classifier>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-base</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>linux</classifier>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-base</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>mac</classifier>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
-<!--            <classifier>win</classifier>-->
+            <classifier>win</classifier>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-graphics</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>linux</classifier>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-graphics</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>mac</classifier>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-            <!--classifier>win</classifier-->
+            <classifier>win</classifier>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-fxml</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>linux</classifier>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-fxml</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <classifier>mac</classifier>-->
-<!--        </dependency>-->
 
 
         <!-- plugin for javafx -->
@@ -161,14 +102,14 @@
 
         <!-- Logging -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.11</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.17.2</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.2</version>
         </dependency>
 
     </dependencies>
@@ -196,11 +137,11 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.5</version>
                 <configuration>
-                    <mainClass>helpcreator/ru.vvsu.helpcreator.Main</mainClass>
+                    <mainClass>helpcreator/${mainClass}</mainClass>
                     <stripDebug>true</stripDebug>
-                    <compress>1</compress>
+                    <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
                     <launcher>helpcreator</launcher>
@@ -216,17 +157,13 @@
                     <name>HelpCreator</name>
                     <appVersion>1.0.0</appVersion>
                     <vendor>ru.vvsu</vendor>
-                    <module>helpcreator/ru.vvsu.helpcreator.Main</module>
+                    <module>helpcreator/${mainClass}</module>
                     <runtimeImage>target/helpcreator</runtimeImage>
                     <destination>target/dist</destination>
-                    <winMenu>true</winMenu>
-                    <winShortcut>true</winShortcut>
-                    <winDirChooser>true</winDirChooser>
-                    <winMenuGroup>Utilities</winMenuGroup>
-                    <!--linuxShortcut>true</linuxShortcut>
+                    <linuxShortcut>true</linuxShortcut>
                     <linuxPackageName>helpcreator</linuxPackageName>
                     <linuxAppCategory>Utilities</linuxAppCategory>
-                    <linuxMenuGroup>Utilities</linuxMenuGroup-->
+                    <linuxMenuGroup>Utilities</linuxMenuGroup>
                     <icon>${project.basedir}/helpcreator.ico</icon>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>

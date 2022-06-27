@@ -10,8 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.model.HtmlGenerateData;
 import ru.vvsu.helpcreator.model.Page;
@@ -35,7 +35,7 @@ import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class HtmlGenerate implements Initializable{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlGenerate.class);
+    private static final Logger LOGGER = LogManager.getLogger(HtmlGenerate.class);
 
     @FXML
     private  HBox hBoxGenerate;
