@@ -15,8 +15,6 @@
         <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>18.0.1</javafx.version>
         <mainClass>ru.vvsu.helpcreator.Main</mainClass>
-        <jlink-image-name>LogbackClassic</jlink-image-name>
-        <ini4j-jar-name>logback-classic.jar</ini4j-jar-name>
     </properties>
 
     <dependencies>
@@ -32,35 +30,35 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+<!--            <classifier>win</classifier>-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+<!--            <classifier>win</classifier>-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+<!--            <classifier>win</classifier>-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+<!--            <classifier>win</classifier>-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+<!--            <classifier>win</classifier>-->
         </dependency>
 
 
@@ -137,10 +135,10 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.5</version>
+                <version>0.0.8</version>
                 <configuration>
                     <mainClass>helpcreator/${mainClass}</mainClass>
-                    <stripDebug>true</stripDebug>
+                    <stripJavaDebugAttributes>true</stripJavaDebugAttributes>
                     <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
@@ -164,6 +162,14 @@
                     <linuxPackageName>helpcreator</linuxPackageName>
                     <linuxAppCategory>Utilities</linuxAppCategory>
                     <linuxMenuGroup>Utilities</linuxMenuGroup>
+                    <winMenu>true</winMenu>
+                    <winShortcut>true</winShortcut>
+                    <winDirChooser>true</winDirChooser>
+                    <winMenuGroup>Utilities</winMenuGroup>
+                    <macPackageIdentifier>helpcreator</macPackageIdentifier>
+                    <macPackageName>HelpCreator</macPackageName>
+                    <macPackageSigningPrefix>fx</macPackageSigningPrefix>
+                    <macSign>true</macSign>
                     <icon>${project.basedir}/helpcreator.ico</icon>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
