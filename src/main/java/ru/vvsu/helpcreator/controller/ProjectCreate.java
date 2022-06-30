@@ -73,7 +73,9 @@ public class ProjectCreate implements Initializable {
         listViewProjects.setCellFactory(lv -> {
             ListCell<Project> cell = new ProjectItemCell();
             ContextMenu contextMenu = new ContextMenu();
+            MenuItem openProject = new MenuItem("Открыть");
             MenuItem deleteMenu = new MenuItem("Удалить проект");
+            openProject.setOnAction(actionEvent -> openSelectProject());
             deleteMenu.setOnAction((event) -> {
                 final Project project = cell.getItem();
                 listViewProjects.getItems().remove(project);
@@ -99,7 +101,7 @@ public class ProjectCreate implements Initializable {
                     e.printStackTrace();
                 }
             });
-            contextMenu.getItems().addAll(deleteMenu);
+            contextMenu.getItems().addAll(openProject, deleteMenu);
             cell.setContextMenu(contextMenu);
             return cell;
         });
@@ -143,13 +145,21 @@ public class ProjectCreate implements Initializable {
     }
 
 
-    public void handleListViewMouseClicked(MouseEvent mouseEvent) throws IOException {
+    public void handleListViewMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() != 2) return;
+        openSelectProject();
+    }
+
+    private void openSelectProject() {
         final Project selectedItem = listViewProjects.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             saveEditTimeProject(selectedItem, selectedItem.getPath() + File.separator + PROJECT_SETTING_NAME);
-            ViewWindow.openMainWindow(selectedItem);
-            ViewWindow.closeWindow(mouseEvent);
+            try {
+                ViewWindow.openMainWindow(selectedItem);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            ViewWindow.closeWindow(listViewProjects.getParent());
         }
     }
 
