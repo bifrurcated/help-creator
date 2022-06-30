@@ -53,6 +53,10 @@ public class ProjectCreate implements Initializable {
         if (projectCount > 0) {
             for (int i = 1; i <= projectCount; i++) {
                 final String projectPath = preferences.get(ARTIFACT_ID + i, "");
+                if (index > 0) {
+                    preferences.put(ARTIFACT_ID + (i - index), projectPath);
+                    preferences.remove(ARTIFACT_ID + i);
+                }
                 if (projectPath.isEmpty()) {
                     preferences.remove(ARTIFACT_ID + i);
                     index++;
@@ -81,9 +85,13 @@ public class ProjectCreate implements Initializable {
                 try {
                     boolean changeNext = false;
                     final String[] keys = preferences.keys();
-                    for (int i = 0; i < keys.length; i++) {
+                    for (int i = 1; i < keys.length; i++) {
                         final String val = preferences.get(keys[i], "");
                         if (!val.isEmpty()) {
+                            if (changeNext) {
+                                preferences.put(ARTIFACT_ID + (i-1), val);
+                                preferences.remove(keys[i]);
+                            }
                             if (val.equals(project.getPath())) {
                                 preferences.remove(keys[i]);
                                 changeNext = true;
