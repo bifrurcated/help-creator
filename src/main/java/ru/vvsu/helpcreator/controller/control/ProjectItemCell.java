@@ -8,6 +8,7 @@ import ru.vvsu.helpcreator.controller.ProjectItem;
 import ru.vvsu.helpcreator.model.Project;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class ProjectItemCell extends ListCell<Project> {
     @Override
@@ -25,7 +26,8 @@ public class ProjectItemCell extends ListCell<Project> {
             final ProjectItem projectItem = fxmlLoader.getController();
             projectItem.setTextProjectName(project.getName());
             projectItem.setTextProjectPath(project.getPath());
-            projectItem.setTextProjectDate(project.getDate());
+            String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(project.getDate());
+            projectItem.setTextProjectDate(projectCreateTime);
             final String imagePath = project.getSettings().getImagePath();
             if (imagePath == null || imagePath.isEmpty()) {
                 projectItem.defaultImageViewProjectIcon();

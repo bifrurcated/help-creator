@@ -23,9 +23,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -88,10 +86,9 @@ public class NewProject implements Initializable {
 
     public void handleBtnOk(ActionEvent actionEvent) throws IOException {
         ProjectPreferences.putProjectPathIfAbsent(preferences, textFieldProjectPath.getText());
-        final Date time = Calendar.getInstance().getTime();
-        String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
+        final long time = Calendar.getInstance().getTimeInMillis();
         System.out.println("ProjectPath: "+textFieldProjectPath.getText());
-        Project project = new Project(textFieldProjectName.getText(), projectCreateTime, textFieldProjectPath.getText(), textFieldImagePath.getText());
+        Project project = new Project(textFieldProjectName.getText(), time, textFieldProjectPath.getText(), textFieldImagePath.getText());
         final Path path = Paths.get(textFieldProjectPath.getText());
         if (!Files.exists(path)){
             Files.createDirectory(path);

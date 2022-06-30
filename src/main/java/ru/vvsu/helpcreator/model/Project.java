@@ -11,16 +11,16 @@ public class Project implements Serializable {
     private static final long serialVersionUID = 8693707378041282986L;
 
     private String name;
-    private String date;
+    private long date;
     private String path;
     private final Settings settings;
     private final HtmlGenerateData htmlGenerateData;
 
-    public Project(String name, String date, String path) {
+    public Project(String name, long date, String path) {
         this(name, date, path, "");
     }
 
-    public Project(String name, String date, String path, String imagePath) {
+    public Project(String name, long date, String path, String imagePath) {
         this.name = name;
         this.date = date;
         this.path = path;
@@ -36,11 +36,11 @@ public class Project implements Serializable {
         this.name = name;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

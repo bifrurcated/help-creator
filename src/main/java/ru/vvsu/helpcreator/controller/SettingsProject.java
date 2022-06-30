@@ -24,9 +24,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -150,10 +148,9 @@ public class SettingsProject implements Initializable {
 
     public void handleBtnOk(ActionEvent actionEvent) throws IOException {
         ProjectPreferences.putProjectPathIfAbsent(preferences, textFieldProjectPath.getText());
-        final Date time = Calendar.getInstance().getTime();
-        String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
+        final long time = Calendar.getInstance().getTimeInMillis();
         final Settings settings = project.getSettings();
-        project.setDate(projectCreateTime);
+        project.setDate(time);
         project.setName(textFieldProjectName.getText());
         project.setPath(textFieldProjectPath.getText());
         settings.setImagePath(textFieldImagePath.getText());

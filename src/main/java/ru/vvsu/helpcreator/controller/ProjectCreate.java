@@ -22,9 +22,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -116,17 +117,7 @@ public class ProjectCreate implements Initializable {
                 }));
 
         SortedList<Project> sortedData = new SortedList<>(filteredData);
-        sortedData.setComparator((o1, o2) -> {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-            try {
-                final Date date1 = dateFormat.parse(o1.getDate());
-                final Date date2 = dateFormat.parse(o2.getDate());
-                return Long.compare(date2.getTime(), date1.getTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return 1;
-        });
+        sortedData.setComparator((o1, o2) -> Long.compare(o2.getDate(), o1.getDate()));
         listViewProjects.setItems(sortedData);
     }
 
@@ -179,9 +170,8 @@ public class ProjectCreate implements Initializable {
     }
 
     private void saveEditTimeProject(Project project, String projectPath) {
-        final Date time = Calendar.getInstance().getTime();
-        String projectCreateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(time);
-        project.setDate(projectCreateTime);
+        final long time = Calendar.getInstance().getTimeInMillis();
+        project.setDate(time);
         FileHelper.serialize(project, projectPath);
     }
 }
