@@ -1,5 +1,7 @@
 package ru.vvsu.helpcreator.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -39,6 +41,7 @@ public class ProjectCreate implements Initializable {
     @FXML
     private ListView<Project> listViewProjects;
 
+    private final ObservableList<Project> projects = FXCollections.observableArrayList();
     private Preferences preferences;
 
     @Override
@@ -56,15 +59,11 @@ public class ProjectCreate implements Initializable {
                     preferences.putInt(ARTIFACT_ID, projectCount-index);
                     continue;
                 }
-                if (index > 0) {
-                    preferences.put(ARTIFACT_ID + (i - index), projectPath);
-                    preferences.remove(ARTIFACT_ID + i);
-                }
                 if (Files.isDirectory(Paths.get(projectPath))) {
                     final File file = new File(projectPath + File.separator + PROJECT_SETTING_NAME);
                     if (file.isFile()) {
                         Optional.ofNullable((Project) FileHelper.deserialize(file.getAbsolutePath()))
-                                .ifPresent(project -> listViewProjects.getItems().add(project));
+                                .ifPresent(projects::add);
                     }
                 }
             }
@@ -78,7 +77,7 @@ public class ProjectCreate implements Initializable {
             openProject.setOnAction(actionEvent -> openSelectProject());
             deleteMenu.setOnAction((event) -> {
                 final Project project = cell.getItem();
-                listViewProjects.getItems().remove(project);
+                projects.remove(project);
                 try {
                     boolean changeNext = false;
                     final String[] keys = preferences.keys();
@@ -90,10 +89,6 @@ public class ProjectCreate implements Initializable {
                                 changeNext = true;
                                 final int anInt = preferences.getInt(ARTIFACT_ID, 0);
                                 preferences.putInt(ARTIFACT_ID, anInt-1);
-                            }
-                            if (changeNext) {
-                                preferences.put(ARTIFACT_ID + i, val);
-                                preferences.remove(keys[i]);
                             }
                         }
                     }
@@ -107,7 +102,7 @@ public class ProjectCreate implements Initializable {
         });
 
 
-        FilteredList<Project> filteredData = new FilteredList<>(listViewProjects.getItems(), project -> true);
+        FilteredList<Project> filteredData = new FilteredList<>(projects, project -> true);
 
         textFieldSearch.textProperty().addListener((observable, oldValue, newValue) ->
                 filteredData.setPredicate(project -> {

@@ -2,6 +2,7 @@ package ru.vvsu.helpcreator.model;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.DIR_HTML;
 
@@ -58,6 +59,19 @@ public class Project implements Serializable {
 
     public HtmlGenerateData getHtmlGenerateData() {
         return htmlGenerateData;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return date == project.date && Objects.equals(name, project.name) && Objects.equals(path, project.path) && Objects.equals(settings, project.settings) && Objects.equals(htmlGenerateData, project.htmlGenerateData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, date, path, settings, htmlGenerateData);
     }
 
     @Override
