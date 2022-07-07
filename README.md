@@ -4,7 +4,8 @@ A program for creating reference systems.
 # Technologies
 [Java 17](https://openjdk.java.net/projects/jdk/17/) \
 [OpenJFX](https://openjfx.io/) \
-[SimplyHTML](https://sourceforge.net/projects/simplyhtml/)
+[ValidatorFX](https://github.com/effad/ValidatorFX) \
+[Ikonli](https://github.com/kordamp/ikonli) \
 
 # License
 A free application for creating help systems.
