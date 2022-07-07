@@ -6,6 +6,3 @@ A program for creating reference systems.
 [OpenJFX](https://openjfx.io/) \
 [ValidatorFX](https://github.com/effad/ValidatorFX) \
 [Ikonli](https://github.com/kordamp/ikonli) \
-
-# License
-A free application for creating help systems.
