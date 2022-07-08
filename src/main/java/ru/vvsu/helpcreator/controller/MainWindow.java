@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ru.vvsu.helpcreator.Main;
 import ru.vvsu.helpcreator.controller.control.ContextMenuTreeCell;
@@ -36,6 +38,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.*;
 
 public class MainWindow implements Initializable {
+
+    private static final Logger LOGGER = LogManager.getLogger(MainWindow.class);
 
     @FXML
     private MenuItem menuItemDelete;
@@ -64,6 +68,7 @@ public class MainWindow implements Initializable {
     }
 
     public void setRootTreeView(Project project) throws IOException {
+        LOGGER.info("initialize project data.");
         this.project = project;
 
         final Page projectPage = new Page(project.getName(), "");
@@ -92,7 +97,8 @@ public class MainWindow implements Initializable {
         Optional.ofNullable((Page[]) FileHelper.deserialize(path + File.separator + project.getName() + SAVE_SUFFIX))
                 .ifPresentOrElse(deserializeArray -> {
                     loadPages = new ArrayList<>(Arrays.asList(deserializeArray));
-                    loadPages.forEach(page -> System.out.println(page.getName()));
+                    LOGGER.info("List of pages:");
+                    loadPages.forEach(page -> LOGGER.info(page.getName()));
                     final ObservableList<TreeItem<Page>> treeItems = treeView.getRoot().getChildren();
                     if (!loadPages.isEmpty()) {
                         setTreeViewElement(loadPages.get(0), treeItems);
@@ -151,12 +157,13 @@ public class MainWindow implements Initializable {
     }
 
     public void handleMenuItemOpen(ActionEvent actionEvent) {
-        System.out.println("deserialize");
+        LOGGER.info("deserialize.");
         Optional.ofNullable(saveChoicer())
                 .ifPresent(pathToSave -> Optional.ofNullable((Page[]) FileHelper.deserialize(pathToSave))
                         .ifPresent(deserializeArray -> {
                             loadPages = new ArrayList<>(Arrays.asList(deserializeArray));
-                            loadPages.forEach(page -> System.out.println(page.getName()));
+                            LOGGER.info("List of pages:");
+                            loadPages.forEach(page -> LOGGER.info(page.getName()));
                             final ObservableList<TreeItem<Page>> treeItems = treeView.getRoot().getChildren();
                             treeItems.clear();
                             if (!loadPages.isEmpty()) {
@@ -187,11 +194,12 @@ public class MainWindow implements Initializable {
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
+        LOGGER.info("serialize.");
         FileHelper.serialize(pages.toArray(new Page[0]), path + File.separator + project.getName() + SAVE_SUFFIX);
-        System.out.println("serialize");
     }
 
     public void generatePages(ObservableList<TreeItem<Page>> treeItems){
+        LOGGER.info("Start generate pages:");
         if (!pages.isEmpty()) {
             pages.clear();
         }
@@ -202,11 +210,9 @@ public class MainWindow implements Initializable {
             countPage.set(1);
         }
         traversalTreeView(treeItems.get(0));
-        System.out.println("pages size: "+pages.size());
+        LOGGER.info("pages size: {}", pages.size());
         pages.sort(Comparator.comparingInt(Page::getId));
-        pages.forEach(page -> {
-            System.out.println("page: "+page.getName() + ", id: " + page.getId());
-        });
+        pages.forEach(page -> LOGGER.info("page: {}, id: {}", page.getName(), page.getId()));
     }
 
     public void handleMenuItemClose(ActionEvent actionEvent) throws IOException {
@@ -221,7 +227,7 @@ public class MainWindow implements Initializable {
 
     private void traversalTreeView(TreeItem<Page> treeItem) {
         final Page page = treeItem.getValue();
-        System.out.println("page: " + page.getName());
+        LOGGER.info("page: {}", page.getName());
         page.setOpen(treeItem.isExpanded());
         page.setId(countPage.get());
         if (treeItem.getParent() != null && treeItem.getParent() != treeView.getRoot()) {

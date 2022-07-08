@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.vvsu.helpcreator.model.Project;
 import ru.vvsu.helpcreator.utils.FileHelper;
 import ru.vvsu.helpcreator.utils.ProjectPreferences;
@@ -32,6 +34,8 @@ import static ru.vvsu.helpcreator.utils.ProjectPreferences.PATTERN_PROJECT_NAME;
 import static ru.vvsu.helpcreator.utils.ProjectPreferences.PROJECT_SETTING_NAME;
 
 public class NewProject implements Initializable {
+
+    private static final Logger LOGGER = LogManager.getLogger(NewProject.class);
 
     @FXML private HBox hBox;
     @FXML private Button btnOk;
@@ -85,16 +89,18 @@ public class NewProject implements Initializable {
     }
 
     public void handleBtnOk(ActionEvent actionEvent) throws IOException {
+        LOGGER.info("Create new project.");
         ProjectPreferences.putProjectPathIfAbsent(preferences, textFieldProjectPath.getText());
         final long time = Calendar.getInstance().getTimeInMillis();
-        System.out.println("ProjectPath: "+textFieldProjectPath.getText());
+        LOGGER.info("ProjectPath: {}", textFieldProjectPath.getText());
         Project project = new Project(textFieldProjectName.getText(), time, textFieldProjectPath.getText(), textFieldImagePath.getText());
         final Path path = Paths.get(textFieldProjectPath.getText());
         if (!Files.exists(path)){
             Files.createDirectory(path);
         }
+        LOGGER.info("Save new project.");
         FileHelper.serialize(project, textFieldProjectPath.getText()+File.separator+PROJECT_SETTING_NAME);
-
+        LOGGER.info("Open editor for project.");
         ViewWindow.openMainWindow(project);
         ViewWindow.closeWindowWithOwner(actionEvent);
     }
