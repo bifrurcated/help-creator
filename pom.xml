@@ -153,7 +153,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <name>HelpCreator</name>
-                    <appVersion>1.0.1</appVersion>
+                    <appVersion>1.0.2</appVersion>
                     <vendor>ru.vvsu</vendor>
                     <module>helpcreator/${mainClass}</module>
                     <runtimeImage>target/helpcreator</runtimeImage>
@@ -170,7 +170,7 @@
                     <macPackageName>HelpCreator</macPackageName>
                     <macPackageSigningPrefix>fx</macPackageSigningPrefix>
                     <macSign>true</macSign>
-                    <icon>${project.basedir}/helpcreator.ico</icon>
+                    <icon>helpcreator.ico</icon>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>

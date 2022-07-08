@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
@@ -17,14 +18,18 @@ import ru.vvsu.helpcreator.model.Project;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public final class ViewWindow {
+
+    private static final Image DEFAULT_ICON = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("images/logo32.png")), 16D, 16D, true, false);
 
     public static void openProjectCreate(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view/project-create.fxml"));
         final Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent, 800, 600);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        stage.getIcons().add(DEFAULT_ICON);
         stage.setTitle("Help Creator");
         stage.setScene(scene);
         stage.show();
@@ -37,6 +42,7 @@ public final class ViewWindow {
         final MainWindow mainWindow = fxmlLoader.getController();
         mainWindow.setRootTreeView(project);
         Scene scene = new Scene(parent, 800, 600);
+        stage.getIcons().add(DEFAULT_ICON);
         stage.setTitle("Help Creator");
         stage.setScene(scene);
         stage.show();
@@ -48,6 +54,7 @@ public final class ViewWindow {
         final Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent, 600, 275);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        newProject.getIcons().add(DEFAULT_ICON);
         newProject.setTitle("Новый проект");
         newProject.setScene(scene);
         newProject.initModality(Modality.WINDOW_MODAL);
@@ -64,6 +71,7 @@ public final class ViewWindow {
         settingsProject.setMainWindow(mainWindow);
         Scene scene = new Scene(parent);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        settingsStage.getIcons().add(DEFAULT_ICON);
         settingsStage.setMaxWidth(618);
         settingsStage.setMaxHeight(578);
         settingsStage.setTitle("Настройки проекта");
@@ -83,6 +91,7 @@ public final class ViewWindow {
         htmlGenerate.setMainWindow(mainWindow);
         Scene scene = new Scene(parent);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        htmlGenerateStage.getIcons().add(DEFAULT_ICON);
         htmlGenerateStage.setTitle("HTML-генератор");
         htmlGenerateStage.setScene(scene);
         htmlGenerateStage.initModality(Modality.WINDOW_MODAL);
